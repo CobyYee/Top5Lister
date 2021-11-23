@@ -13,6 +13,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
+import AuthContext from '../auth';
 
 /*
     This is a card in our list of top 5 lists. It lets select
@@ -23,6 +24,7 @@ import Grid from '@mui/material/Grid';
 */
 function ListCard(props) {
     const { store } = useContext(GlobalStoreContext);
+    const { auth } = useContext(AuthContext);
     const [isExpanded, setExpanded] = useState(false);
     const { key, idNamePair } = props;
 
@@ -48,6 +50,15 @@ function ListCard(props) {
     async function handleDeleteList(event, id) {
         event.stopPropagation();
         store.markListForDeletion(id);
+    }
+
+    let trashIcon = "";
+    if(auth.user.email === idNamePair.ownerEmail) {
+        trashIcon =
+            <IconButton onClick={(event) => {
+                handleDeleteList(event, idNamePair._id)}} aria-label='delete'>
+                <DeleteIcon style={{fontSize:'18pt'}} />
+            </IconButton>
     }
 
     let editButton = 
@@ -137,11 +148,7 @@ function ListCard(props) {
                     }}>
                         <DislikeIcon style={{fontSize:'18pt'}}/>
                     </IconButton>
-                    <IconButton onClick={(event) => {
-                        handleDeleteList(event, idNamePair._id)
-                    }} aria-label='delete'>
-                        <DeleteIcon style={{fontSize:'18pt'}} />
-                    </IconButton>
+                    {trashIcon}
                 </Box>
                 <Box id = "expand-icon">
                     <IconButton onClick = {(event) => {

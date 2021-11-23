@@ -33,15 +33,15 @@ function Statusbar() {
     }
 
     function handleHome() {
-        store.loadUserIdNamePairs(auth.user.email);
+        store.openHome();
     }
 
     function handleGroups() {
-        store.loadAllPublishedLists();
+        store.openAllLists();
     }
 
     function handlePerson() {
-
+        
     }
 
     function handleCommunity() {
@@ -57,24 +57,40 @@ function Statusbar() {
                                 <AddIcon />
                             </Fab>
     let component = "";
+    let firstColor = "grey";
+    let secondColor = "grey";
+    let thirdColor = "grey";
+    let fourthColor = "grey";
+    if(store.currentTab === "HOME") {
+        firstColor = "blue";
+    }
+    else if(store.currentTab === "ALL_LISTS") {
+        secondColor = "blue";
+    }
+    else if(store.currentTab === "USER_LIST") {
+        thirdColor = "blue";
+    }
+    else if(store.currentTab === "COMMUNITY") {
+        fourthColor = "blue";
+    }
     if(location.pathname === "/lists/") {
         component = <div id="top5-list-interface">
                         <Grid container spacing = {2} >
                             <Grid item xs = {4} >
                                 <IconButton onClick = {handleHome} >
-                                    <HomeIcon style = {{fontSize:'30pt', position: 'absolute', left: '2%'}}/>
+                                    <HomeIcon style = {{fontSize:'30pt', position: 'absolute', left: '2%', color: firstColor}}/>
                                 </IconButton>
                                 &nbsp;&nbsp;
                                 <IconButton onClick = {handleGroups}>
-                                    <GroupsIcon style = {{fontSize:'30pt', position: 'absolute', left: '22%'}}/>
+                                    <GroupsIcon style = {{fontSize:'30pt', position: 'absolute', left: '22%', color: secondColor}}/>
                                 </IconButton>
                                 &nbsp;&nbsp;
                                 <IconButton onClick = {handlePerson}>
-                                    <PersonIcon style = {{fontSize:'30pt', position: 'absolute', left: '42%'}}/>
+                                    <PersonIcon style = {{fontSize:'30pt', position: 'absolute', left: '42%', color: thirdColor}}/>
                                 </IconButton>
                                 &nbsp;&nbsp;
                                 <IconButton onClick = {handleCommunity}>
-                                    <FunctionsIcon style = {{fontSize:'30pt', position: 'absolute', left: '62%'}}/>
+                                    <FunctionsIcon style = {{fontSize:'30pt', position: 'absolute', left: '62%', color: fourthColor}}/>
                                 </IconButton>
                             </Grid>
                             <Grid item xs = {4} >
