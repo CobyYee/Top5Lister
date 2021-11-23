@@ -25,7 +25,7 @@ export default function SplashScreen() {
                 fontSize: "12px"
             }}> Register</Button>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <Button variant = "outlined" style={{
+            <Button variant = "outlined" component = {Link} to = "/lists/" style={{
                 color: "#000000",
                 padding: "10px 36px",
                 width: "150px",

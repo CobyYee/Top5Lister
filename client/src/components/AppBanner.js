@@ -53,6 +53,25 @@ export default function AppBanner() {
             <MenuItem onClick={handleMenuClose}><Link to='/register/'>Create New Account</Link></MenuItem>
         </Menu>
     );
+    const guestMenu = (
+        <Menu
+            anchorEl={anchorEl}
+            anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+            }}
+            id={menuId}
+            keepMounted
+            transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+            }}
+            open={isMenuOpen}
+            onClose={handleMenuClose}
+        >
+            <MenuItem onClick={handleMenuClose}><Link to='/'>Return to Welcome Page</Link></MenuItem>
+        </Menu>
+    );
     const loggedInMenu = 
         <Menu
             anchorEl={anchorEl}
@@ -100,6 +119,9 @@ export default function AppBanner() {
     }
     let component = "";
     const location = useLocation();
+    if(location.pathname === "/lists/" && !auth.loggedIn) {
+        menu = guestMenu;
+    }
     if(location.pathname !== "/") {
         component = <Box sx={{ flexGrow: 1}}>
                         <AppBar position="static">
