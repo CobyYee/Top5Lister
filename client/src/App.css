@@ -140,6 +140,14 @@ body {
   width: 90%;
   border-radius: 5pt;
 }
+
+#views-display {
+  font-size: 12pt;
+  left: 10px;
+  top: 50px;
+  position: absolute;
+}
+
 #statusbar {
   position: absolute;
   margin: auto;

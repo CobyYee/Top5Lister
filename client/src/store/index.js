@@ -215,6 +215,26 @@ function GlobalStoreContextProvider(props) {
         }
     }
 
+    store.setListPublished = async function (){
+        try {
+            let response = await api.getTop5ListById(store.currentList._id);
+            if(response.data.success) {
+                let top5List = response.data.top5List;
+                top5List.datePublished = Date.now();
+                
+                async function updateList(top5List){  
+                    response = await api.updateTop5ListById(top5List._id, top5List);
+                    if(response.data.success) {
+                        store.currentList.datePublished = top5List.datePublished;
+                    }
+                }
+                updateList(top5List);
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     // THIS FUNCTION PROCESSES CLOSING THE CURRENTLY LOADED LIST
     store.closeCurrentList = function () {
         storeReducer({
@@ -229,7 +249,8 @@ function GlobalStoreContextProvider(props) {
         let payload = {
             name: newListName,
             items: ["?", "?", "?", "?", "?"],
-            ownerEmail: auth.user.email
+            ownerEmail: auth.user.email,
+            datePublished: null
         };
         try {
             const response = await api.createTop5List(payload);
@@ -238,8 +259,7 @@ function GlobalStoreContextProvider(props) {
                 storeReducer({
                     type: GlobalStoreActionType.CREATE_NEW_LIST,
                     payload: newList
-                }
-                );
+                });
             }
             else {
                 console.log("API FAILED TO CREATE A NEW LIST");
@@ -355,6 +375,7 @@ function GlobalStoreContextProvider(props) {
     // moveItem, updateItem, updateCurrentList, undo, and redo
     store.setCurrentList = async function (id) {
         let response = await api.getTop5ListById(id);
+        console.log(response.data.top5List);
         if (response.data.success) {
             let top5List = response.data.top5List;
 

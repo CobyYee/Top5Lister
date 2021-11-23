@@ -22,6 +22,34 @@ function WorkspaceScreen() {
         store.closeCurrentList();
     }
 
+    function hasRepetitions(arr) {
+        for(let i = 0; i < arr.length; i++) {
+            for(let j = i + 1; j < arr.length; j++) {
+                if(arr[i] === arr[j]) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    function publishList() {
+        if(listName === "") {
+            console.log("Can't publish a list without a title");
+        }
+        else if(store.currentList.items[0] === "" || store.currentList.items[1] === "" || store.currentList.items[2] === "" || store.currentList.items[3] === "" || store.currentList.items[4] === "") {
+            console.log("Can't publish a list when one of the items is empty");
+        }
+        else if(hasRepetitions(store.currentList.items)) {
+            console.log("Can't publish a list with repeating items.");
+        }
+        else {
+            store.changeListName(store.currentList._id, listName);
+            store.setListPublished();
+            store.closeCurrentList();
+        }
+    }
+
     function handleUpdate (event) {
         setListName(event.target.value);
     }
@@ -95,7 +123,7 @@ function WorkspaceScreen() {
             <div id = "workspaceButtons">
                 <Button variant = "contained" onClick = {saveList}> Save </Button>
                 &nbsp;&nbsp;&nbsp;
-                <Button variant = "contained"> Publish </Button>
+                <Button variant = "contained" onClick = {publishList}> Publish </Button>
             </div>
         </div>
     )

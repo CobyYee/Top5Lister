@@ -50,14 +50,23 @@ function ListCard(props) {
         store.markListForDeletion(id);
     }
 
+    let editButton = 
+        <Button sx={{fontSize: "8pt", left: '10px', top: '50px', position: 'absolute'}} variant = "outlined" 
+            onClick = {(event) => {handleLoadList(event, idNamePair._id)}}> 
+            Edit 
+        </Button>;
+    if(idNamePair.datePublished) {
+        editButton = 
+            <div id = "views-display">
+                Views: 
+            </div>
+    }
     let expandIcon = <ExpandMoreIcon sx = {{fontSize: "18pt"}}/>
     let cardHeight = "80pt";
     let listContainer = "";
-    let buttonHeight = "50px";
     if(isExpanded) {
         expandIcon = <ExpandLessIcon sx = {{fontSize: "18pt"}}/>
         cardHeight = "300pt";
-        buttonHeight = "350px";
         listContainer = 
             <Container id = "list-container">
                 <Grid container spacing={1} border = "1px" rowSpacing = {2} sx = {{top: '4%', position: 'absolute'}}>
@@ -111,13 +120,12 @@ function ListCard(props) {
     }
 
     let cardElement =
-        <ListItem sx = {{height: cardHeight}}>
+        <ListItem sx = {{height: cardHeight, bgColor: "#1B95DB"}}>
             <div>
                 <Box sx={{fontSize: "18pt", left: '10px', top: '10px', position: 'absolute'}}>{idNamePair.name}</Box>
                 <Box sx={{fontSize: "12pt", left: '10px', top: '30px', position: 'absolute'}}>By: {idNamePair.ownerEmail}</Box>
                 {listContainer}
-                <Button sx={{fontSize: "8pt", left: '10px', top: buttonHeight, position: 'absolute'}} variant = "outlined" 
-                    onClick = {(event) => {handleLoadList(event, idNamePair._id)}}> Edit </Button>
+                {editButton}
                 <Box sx={{ p: 1 }} id = "list-buttons">
                     <IconButton onClick={(event) => {
                         handleLikeList(event, idNamePair._id)

@@ -33,7 +33,6 @@ function Statusbar() {
     }
 
     function handleHome() {
-        console.log(auth.user.email);
         store.loadUserIdNamePairs(auth.user.email);
     }
 
