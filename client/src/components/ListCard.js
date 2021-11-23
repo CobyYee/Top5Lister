@@ -24,9 +24,7 @@ import Grid from '@mui/material/Grid';
 function ListCard(props) {
     const { store } = useContext(GlobalStoreContext);
     const [isExpanded, setExpanded] = useState(false);
-    const { idNamePair } = props;
-
-    console.log(idNamePair);
+    const { key, idNamePair } = props;
 
     function handleLoadList(event, id) {
         if (!event.target.disabled) {
@@ -69,7 +67,7 @@ function ListCard(props) {
                         </Grid>
                         <Grid item xs = {10} sx = {{fontSize: "24pt", width: '84%', position: 'absolute',
                             left: '10%', borderRadius: '10pt', color: 'yellow'}}> 
-                            <div> { idNamePair.items[0] }</div>
+                            <div>  { idNamePair.items[0] } </div>
                         </Grid>
                     </Grid>
                     <Grid container item spacing={2}>
@@ -78,7 +76,7 @@ function ListCard(props) {
                         </Grid>
                         <Grid item xs = {10} sx = {{fontSize: "24pt", width: '84%', position: 'absolute',
                             left: '10%', borderRadius: '10pt', color: 'yellow'}}> 
-                            <div> {idNamePair.items[1] } </div>
+                            <div> { idNamePair.items[1] } </div>
                         </Grid>
                     </Grid>
                     <Grid container item spacing={2} >
@@ -87,7 +85,7 @@ function ListCard(props) {
                         </Grid>
                         <Grid item xs = {10} sx = {{fontSize: "24pt", width: '84%', position: 'absolute',
                             left: '10%', borderRadius: '10pt', color: 'yellow'}}> 
-                            <div> {idNamePair.items[2] } </div>
+                            <div> { idNamePair.items[2] } </div>
                         </Grid>
                     </Grid>
                     <Grid container item spacing={2} >
@@ -96,7 +94,7 @@ function ListCard(props) {
                         </Grid>
                         <Grid item xs = {10} sx = {{fontSize: "24pt", width: '84%', position: 'absolute',
                             left: '10%', borderRadius: '10pt', color: 'yellow'}}> 
-                            <div> {idNamePair.items[3] } </div>
+                            <div> { idNamePair.items[3] } </div>
                         </Grid>
                     </Grid>
                     <Grid container item spacing={2}>
@@ -105,7 +103,7 @@ function ListCard(props) {
                         </Grid>
                         <Grid item xs = {10} sx = {{fontSize: "24pt", width: '84%', position: 'absolute',
                             left: '10%', borderRadius: '10pt', color: 'yellow'}}> 
-                            <div> {idNamePair.items[4] } </div>
+                            <div> { idNamePair.items[4] } </div>
                         </Grid>
                     </Grid>
                 </Grid>

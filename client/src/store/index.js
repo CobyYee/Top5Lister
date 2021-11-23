@@ -24,6 +24,7 @@ export const GlobalStoreActionType = {
     SET_CURRENT_LIST: "SET_CURRENT_LIST",
     SET_ITEM_EDIT_ACTIVE: "SET_ITEM_EDIT_ACTIVE",
     SET_LIST_NAME_EDIT_ACTIVE: "SET_LIST_NAME_EDIT_ACTIVE",
+    LOAD_LISTS_ARRAY: "LOAD_LISTS_ARRAY"
 }
 
 // WITH THIS WE'RE MAKING OUR GLOBAL DATA STORE
@@ -32,6 +33,7 @@ function GlobalStoreContextProvider(props) {
     // THESE ARE ALL THE THINGS OUR DATA STORE WILL MANAGE
     const [store, setStore] = useState({
         idNamePairs: [],
+        lists: [],
         currentList: null,
         newListCounter: 0,
         listNameActive: false,
@@ -57,7 +59,8 @@ function GlobalStoreContextProvider(props) {
                     newListCounter: store.newListCounter,
                     isListNameEditActive: false,
                     isItemEditActive: false,
-                    listMarkedForDeletion: null
+                    listMarkedForDeletion: null,
+                    lists: store.lists
                 });
             }
             // STOP EDITING THE CURRENT LIST
@@ -68,7 +71,8 @@ function GlobalStoreContextProvider(props) {
                     newListCounter: store.newListCounter,
                     isListNameEditActive: false,
                     isItemEditActive: false,
-                    listMarkedForDeletion: null
+                    listMarkedForDeletion: null,
+                    lists: store.lists
                 })
             }
             // CREATE A NEW LIST
@@ -79,7 +83,8 @@ function GlobalStoreContextProvider(props) {
                     newListCounter: store.newListCounter + 1,
                     isListNameEditActive: false,
                     isItemEditActive: false,
-                    listMarkedForDeletion: null
+                    listMarkedForDeletion: null,
+                    lists: store.lists
                 })
             }
             // GET ALL THE LISTS SO WE CAN PRESENT THEM
@@ -90,7 +95,20 @@ function GlobalStoreContextProvider(props) {
                     newListCounter: store.newListCounter,
                     isListNameEditActive: false,
                     isItemEditActive: false,
-                    listMarkedForDeletion: null
+                    listMarkedForDeletion: null,
+                    lists: store.lists
+                });
+            }
+            // GET ALL THE LISTS
+            case GlobalStoreActionType.LOAD_LISTS_ARRAY: {
+                return setStore({
+                    idNamePairs: store.idNamePairs,
+                    currentList: store.currentList,
+                    newListCounter: store.newListCounter,
+                    isListNameEditActive: false,
+                    isItemEditActive: false,
+                    listMarkedForDeletion: null,
+                    lists: payload
                 });
             }
             // PREPARE TO DELETE A LIST
@@ -101,7 +119,8 @@ function GlobalStoreContextProvider(props) {
                     newListCounter: store.newListCounter,
                     isListNameEditActive: false,
                     isItemEditActive: false,
-                    listMarkedForDeletion: payload
+                    listMarkedForDeletion: payload,
+                    lists: store.lists
                 });
             }
             // PREPARE TO DELETE A LIST
@@ -112,7 +131,8 @@ function GlobalStoreContextProvider(props) {
                     newListCounter: store.newListCounter,
                     isListNameEditActive: false,
                     isItemEditActive: false,
-                    listMarkedForDeletion: null
+                    listMarkedForDeletion: null,
+                    lists: store.lists
                 });
             }
             // UPDATE A LIST
@@ -123,7 +143,8 @@ function GlobalStoreContextProvider(props) {
                     newListCounter: store.newListCounter,
                     isListNameEditActive: false,
                     isItemEditActive: false,
-                    listMarkedForDeletion: null
+                    listMarkedForDeletion: null,
+                    lists: store.lists
                 });
             }
             // START EDITING A LIST ITEM
@@ -134,7 +155,8 @@ function GlobalStoreContextProvider(props) {
                     newListCounter: store.newListCounter,
                     isListNameEditActive: false,
                     isItemEditActive: true,
-                    listMarkedForDeletion: null
+                    listMarkedForDeletion: null,
+                    lists: store.lists
                 });
             }
             // START EDITING A LIST NAME
@@ -145,7 +167,8 @@ function GlobalStoreContextProvider(props) {
                     newListCounter: store.newListCounter,
                     isListNameEditActive: true,
                     isItemEditActive: false,
-                    listMarkedForDeletion: null
+                    listMarkedForDeletion: null,
+                    lists: store.lists
                 });
             }
             default:
@@ -172,7 +195,6 @@ function GlobalStoreContextProvider(props) {
                                 response = await api.getTop5ListPairs();
                                 if (response.data.success) {
                                     let pairsArray = response.data.idNamePairs;
-                                    pairsArray = await store.filterPairs(pairsArray);
                                     storeReducer({
                                         type: GlobalStoreActionType.CHANGE_LIST_NAME,
                                         payload: {
@@ -227,15 +249,42 @@ function GlobalStoreContextProvider(props) {
         }
     }
 
-    store.filterPairs = async function(arr) {
+    store.filterPairs = async function(arr, ownerEmail) {
         let arr2 = [];
         for(let i = 0; i < arr.length; i++) {
             const response = await api.getTop5ListById(arr[i]._id);
-            if(response.data.top5List.ownerEmail === auth.user.email) {
+            console.log("1) " + response.data.top5List.ownerEmail);
+            console.log("2) " + ownerEmail);
+            if(response.data.top5List.ownerEmail === ownerEmail) {
                 arr2.push(response.data.top5List);
             }
         }
         return arr2;
+    }
+
+    store.loadUserIdNamePairs = async function(ownerEmail) {
+        const response = await api.getTop5ListPairs();
+        if (response.data.success) {
+            let pairsArray = response.data.idNamePairs;
+            pairsArray = await store.filterPairs(pairsArray, ownerEmail);
+            storeReducer({
+                type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
+                payload: pairsArray
+            });
+            
+            let lists = [];
+            for(let i = 0; i < pairsArray.length; i++) {
+                let response2 = await api.getTop5ListById(pairsArray[i]._id);
+                lists.push(response2.data.top5List);
+            }
+            storeReducer({
+                type: GlobalStoreActionType.LOAD_LISTS_ARRAY,
+                payload: lists
+            });
+        }
+        else {
+            console.log("API FAILED TO GET THE LIST PAIRS");
+        }
     }
 
     // THIS FUNCTION LOADS ALL THE ID, NAME PAIRS SO WE CAN LIST ALL THE LISTS
@@ -246,6 +295,16 @@ function GlobalStoreContextProvider(props) {
             storeReducer({
                 type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
                 payload: pairsArray
+            });
+            
+            let lists = [];
+            for(let i = 0; i < pairsArray.length; i++) {
+                let response2 = await api.getTop5ListById(pairsArray[i]._id);
+                lists.push(response2.data.top5List);
+            }
+            storeReducer({
+                type: GlobalStoreActionType.LOAD_LISTS_ARRAY,
+                payload: lists
             });
         }
         else {
@@ -307,14 +366,6 @@ function GlobalStoreContextProvider(props) {
                 });
             }
         }
-    }
-
-    store.addMoveItemTransaction = function (start, end) {
-        store.moveItem(start,end);
-    }
-
-    store.addUpdateItemTransaction = function (index, newText) {
-        store.updateItem(index, newText);
     }
 
     store.moveItem = function (start, end) {

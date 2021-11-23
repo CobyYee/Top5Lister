@@ -11,6 +11,8 @@ import Grid from '@mui/material/Grid'
 import SortIcon from '@mui/icons-material/Sort'
 import Fab from '@mui/material/Fab'
 import AddIcon from '@mui/icons-material/Add'
+import IconButton from '@mui/material/IconButton'
+import AuthContext from '../auth'
 
 /*
     Our Status bar React component goes at the bottom of our UI.
@@ -19,6 +21,7 @@ import AddIcon from '@mui/icons-material/Add'
 */
 function Statusbar() {
     const { store } = useContext(GlobalStoreContext);
+    const { auth } = useContext(AuthContext);
     let text ="";
     const location = useLocation();
     if (store.currentList) {
@@ -27,6 +30,23 @@ function Statusbar() {
     
     function handleCreateNewList() {
         store.createNewList();
+    }
+
+    function handleHome() {
+        console.log(auth.user.email);
+        store.loadUserIdNamePairs(auth.user.email);
+    }
+
+    function handleGroups() {
+        store.loadIdNamePairs();
+    }
+
+    function handlePerson() {
+
+    }
+
+    function handleCommunity() {
+
     }
 
     let statusBarContents = <Fab 
@@ -42,13 +62,21 @@ function Statusbar() {
         component = <div id="top5-list-interface">
                         <Grid container spacing = {2} >
                             <Grid item xs = {4} >
-                                <HomeIcon fontSize = "Large"/>
+                                <IconButton onClick = {handleHome} >
+                                    <HomeIcon style = {{fontSize:'30pt', position: 'absolute', left: '2%'}}/>
+                                </IconButton>
                                 &nbsp;&nbsp;
-                                <GroupsIcon fontSize = "Large"/>
+                                <IconButton onClick = {handleGroups}>
+                                    <GroupsIcon style = {{fontSize:'30pt', position: 'absolute', left: '22%'}}/>
+                                </IconButton>
                                 &nbsp;&nbsp;
-                                <PersonIcon fontSize = "Large"/>
+                                <IconButton onClick = {handlePerson}>
+                                    <PersonIcon style = {{fontSize:'30pt', position: 'absolute', left: '42%'}}/>
+                                </IconButton>
                                 &nbsp;&nbsp;
-                                <FunctionsIcon fontSize = "Large"/>
+                                <IconButton onClick = {handleCommunity}>
+                                    <FunctionsIcon style = {{fontSize:'30pt', position: 'absolute', left: '62%'}}/>
+                                </IconButton>
                             </Grid>
                             <Grid item xs = {4} >
                                 <TextField placeholder = "Search" size="small" sx = {{width: "100%"}}/>
