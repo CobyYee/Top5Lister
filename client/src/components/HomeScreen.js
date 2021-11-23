@@ -15,10 +15,6 @@ import { WorkspaceScreen } from '.';
 const HomeScreen = () => {
     const { store } = useContext(GlobalStoreContext);
 
-    useEffect(() => {
-        store.loadIdNamePairs();
-    }, []);
-
     let listCard = "";
     if (store) {
         listCard = 

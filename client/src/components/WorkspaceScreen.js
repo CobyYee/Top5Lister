@@ -44,9 +44,8 @@ function WorkspaceScreen() {
             console.log("Can't publish a list with repeating items.");
         }
         else {
-            store.changeListName(store.currentList._id, listName);
             store.setListPublished();
-            store.closeCurrentList();
+            saveList();
         }
     }
 

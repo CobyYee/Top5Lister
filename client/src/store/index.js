@@ -273,8 +273,6 @@ function GlobalStoreContextProvider(props) {
         let arr2 = [];
         for(let i = 0; i < arr.length; i++) {
             const response = await api.getTop5ListById(arr[i]._id);
-            console.log("1) " + response.data.top5List.ownerEmail);
-            console.log("2) " + ownerEmail);
             if(response.data.top5List.ownerEmail === ownerEmail) {
                 arr2.push(response.data.top5List);
             }
@@ -292,15 +290,30 @@ function GlobalStoreContextProvider(props) {
                 payload: pairsArray
             });
             
-            let lists = [];
+            store.updateListsState(pairsArray);
+        }
+        else {
+            console.log("API FAILED TO GET THE LIST PAIRS");
+        }
+    }
+
+    store.loadAllPublishedLists = async function () {
+        const response = await api.getTop5ListPairs();
+        if (response.data.success) {
+            let pairsArray = response.data.idNamePairs;
+            let filteredArray = [];
             for(let i = 0; i < pairsArray.length; i++) {
                 let response2 = await api.getTop5ListById(pairsArray[i]._id);
-                lists.push(response2.data.top5List);
+                if(response2.data.top5List.datePublished !== null) {
+                    filteredArray.push(response2.data.top5List);
+                }
             }
             storeReducer({
-                type: GlobalStoreActionType.LOAD_LISTS_ARRAY,
-                payload: lists
+                type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
+                payload: filteredArray
             });
+            
+            store.updateListsState(filteredArray);
         }
         else {
             console.log("API FAILED TO GET THE LIST PAIRS");
@@ -317,19 +330,24 @@ function GlobalStoreContextProvider(props) {
                 payload: pairsArray
             });
             
-            let lists = [];
-            for(let i = 0; i < pairsArray.length; i++) {
-                let response2 = await api.getTop5ListById(pairsArray[i]._id);
-                lists.push(response2.data.top5List);
-            }
-            storeReducer({
-                type: GlobalStoreActionType.LOAD_LISTS_ARRAY,
-                payload: lists
-            });
+            store.updateListsState(pairsArray);
         }
         else {
             console.log("API FAILED TO GET THE LIST PAIRS");
         }
+    }
+
+    store.updateListsState = async function (array) {
+        let lists = [];
+        for(let i = 0; i < array.length; i++) {
+            let response2 = await api.getTop5ListById(array[i]._id);
+            lists.push(response2.data.top5List);
+        }
+        storeReducer({
+            type: GlobalStoreActionType.LOAD_LISTS_ARRAY,
+            payload: lists
+        });
+        
     }
 
     // THE FOLLOWING 5 FUNCTIONS ARE FOR COORDINATING THE DELETION
@@ -352,8 +370,7 @@ function GlobalStoreContextProvider(props) {
         if(auth.user !== null && auth.user.email === listToDelete.ownerEmail) {
             let response = await api.deleteTop5ListById(listToDelete._id);
             if (response.data.success) {
-                store.loadIdNamePairs();
-                history.push("/");
+                store.loadUserIdNamePairs(auth.user.email);
             }
         }
     }

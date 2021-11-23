@@ -101,7 +101,7 @@ function AuthContextProvider(props) {
                     }
                 })
                 history.push("/lists/");
-                store.loadIdNamePairs();
+                store.loadUserIdNamePairs(userData.email);
             }
         } catch (err) {
             authReducer({
@@ -141,7 +141,7 @@ function AuthContextProvider(props) {
                     }
                 })
                 history.push("/");
-                store.loadIdNamePairs();
+                //store.loadIdNamePairs();
             }
         } catch (err) {
             authReducer({

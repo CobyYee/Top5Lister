@@ -37,7 +37,7 @@ function Statusbar() {
     }
 
     function handleGroups() {
-        store.loadIdNamePairs();
+        store.loadAllPublishedLists();
     }
 
     function handlePerson() {
