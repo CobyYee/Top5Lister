@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { GlobalStoreContext } from '../store'
 import ListCard from './ListCard.js'
 import { Fab, Typography } from '@mui/material'
@@ -14,6 +14,20 @@ import { WorkspaceScreen } from '.';
 */
 const HomeScreen = () => {
     const { store } = useContext(GlobalStoreContext);
+    const [listTab, setListTab] = useState("HOME");
+
+    const homeCallback = () => {
+        setListTab("HOME");
+    }
+    const groupsCallback = () => {
+        setListTab("ALL");
+    }
+    const userCallback = () => {
+        setListTab("USER");
+    }
+    const communityCallback = () => {
+        setListTab("COMMUNITY");
+    }
 
     let listCard = "";
     if (store) {
@@ -46,7 +60,13 @@ const HomeScreen = () => {
             <div id="top5-list-selector">
                 {component}
             </div>
-            <Statusbar/>
+            <Statusbar
+                tab = {listTab}
+                homeCallback = {homeCallback}
+                groupsCallback = {groupsCallback}
+                userCallback = {userCallback}
+                communityCallback = {communityCallback}
+            />
         </div>)
 }
 

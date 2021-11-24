@@ -36,6 +36,11 @@ function ListCard(props) {
     }
 
     function handleToggleExpand(event, id) {
+        if(store.currentTab !== "HOME" && !isExpanded) {
+            console.log(store.currentTab);
+            store.incrementViews(idNamePair);
+            document.getElementById("views-display").innerHTML = ("Views: " + idNamePair.views);
+        }
         setExpanded(!isExpanded);
     }
 
@@ -69,7 +74,7 @@ function ListCard(props) {
     if(idNamePair.datePublished) {
         editButton = 
             <div id = "views-display">
-                Views: 
+                Views: {idNamePair.views}
             </div>
     }
     let expandIcon = <ExpandMoreIcon sx = {{fontSize: "18pt"}}/>

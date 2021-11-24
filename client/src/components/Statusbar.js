@@ -19,33 +19,42 @@ import AuthContext from '../auth'
     
     @author McKilla Gorilla
 */
-function Statusbar() {
+function Statusbar(props) {
     const { store } = useContext(GlobalStoreContext);
     const { auth } = useContext(AuthContext);
-    let text ="";
+    let text = "";
+
+    const {tab, homeCallback, groupsCallback, userCallback, communityCallback} = props;
+
     const location = useLocation();
     if (store.currentList) {
         text = store.currentList.name;
     }
     
-    function handleCreateNewList() {
+    const handleCreateNewList = () => {
         store.createNewList();
     }
 
-    function handleHome() {
-        store.openHome();
+    const handleHome = (event) => {
+        console.log("HOME");
+        homeCallback();
+        store.loadUserIdNamePairs(auth.user.email);
     }
 
-    function handleGroups() {
-        store.openAllLists();
+    const handleGroups = () => {
+        console.log("GROUPS");
+        groupsCallback();
+        store.loadAllPublishedLists();
     }
 
     function handlePerson() {
-        
+        console.log("USER");
+        userCallback();
     }
 
     function handleCommunity() {
-
+        console.log("COMMUNITY");
+        communityCallback();
     }
 
     let statusBarContents = <Fab 
@@ -61,23 +70,23 @@ function Statusbar() {
     let secondColor = "grey";
     let thirdColor = "grey";
     let fourthColor = "grey";
-    if(store.currentTab === "HOME") {
+    if(tab === "HOME") {
         firstColor = "blue";
     }
-    else if(store.currentTab === "ALL_LISTS") {
+    else if(tab === "ALL") {
         secondColor = "blue";
     }
-    else if(store.currentTab === "USER_LIST") {
+    else if(tab === "USER") {
         thirdColor = "blue";
     }
-    else if(store.currentTab === "COMMUNITY") {
+    else if(tab === "COMMUNITY") {
         fourthColor = "blue";
     }
     if(location.pathname === "/lists/") {
         component = <div id="top5-list-interface">
                         <Grid container spacing = {2} >
                             <Grid item xs = {4} >
-                                <IconButton onClick = {handleHome} >
+                                <IconButton onClick = {(event) => {handleHome(event)}} >
                                     <HomeIcon style = {{fontSize:'30pt', position: 'absolute', left: '2%', color: firstColor}}/>
                                 </IconButton>
                                 &nbsp;&nbsp;
