@@ -39,7 +39,6 @@ function ListCard(props) {
         if(store.currentTab !== "HOME" && !isExpanded) {
             console.log(store.currentTab);
             store.incrementViews(idNamePair);
-            document.getElementById("views-display").innerHTML = ("Views: " + idNamePair.views);
         }
         setExpanded(!isExpanded);
     }

@@ -357,25 +357,34 @@ function GlobalStoreContextProvider(props) {
 
     store.sortLists = function (sortType) {
         if(sortType === "descDate") {
-
+            console.log("Sort by descending date");
         }
         else if(sortType === "ascDate") {
-
+            console.log("Sory by ascending date");
         }
         else if(sortType === "views") {
+            console.log("Sory by views");
+            /*
             store.lists.sort(function(a, b){
                 return a.views - b.views;
             })
+            */
         }
         else if(sortType === "likes") {
+            console.log("Sort by likes");
+            /*
             store.lists.sort(function(a, b) {
                 return a.likes - b.likes;
             })
+            */
         }
         else if(sortType === "dislikes") {
+            console.log("Sort by dislikes");
+            /*
             store.lists.sort(function(a, b) {
                 return a.dislikes - b.dislikes;
             })
+            */
         }
     }
 

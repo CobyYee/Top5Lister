@@ -150,12 +150,9 @@ body {
 
 #statusbar {
   position: absolute;
-  margin: auto;
-  align-items: center;
-  align-content: center;
+  align-content:center;
   top: 90%;
   height: 10%;
-  left:50%;
 }
 
 #workspaceButtons {

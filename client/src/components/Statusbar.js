@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { GlobalStoreContext } from '../store'
 import { useLocation } from 'react-router-dom'
 import HomeIcon from '@mui/icons-material/Home'
@@ -13,6 +13,9 @@ import Fab from '@mui/material/Fab'
 import AddIcon from '@mui/icons-material/Add'
 import IconButton from '@mui/material/IconButton'
 import AuthContext from '../auth'
+import Menu from '@mui/material/Menu'
+import MenuItem from '@mui/material/MenuItem'
+import Container from '@mui/material/Container'
 
 /*
     Our Status bar React component goes at the bottom of our UI.
@@ -22,6 +25,8 @@ import AuthContext from '../auth'
 function Statusbar(props) {
     const { store } = useContext(GlobalStoreContext);
     const { auth } = useContext(AuthContext);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const isMenuOpen = Boolean(anchorEl);
     let text = "";
 
     const {tab, homeCallback, groupsCallback, userCallback, communityCallback} = props;
@@ -30,25 +35,33 @@ function Statusbar(props) {
     if (store.currentList) {
         text = store.currentList.name;
     }
-    
+
+    const handleProfileMenuOpen = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleMenuClose = () => {
+        setAnchorEl(null);
+    };
+
     const handleCreateNewList = () => {
         store.createNewList();
     }
 
     const handleHome = (event) => {
-        console.log("HOME");
         homeCallback();
+        handleMenuClose();
         store.loadUserIdNamePairs(auth.user.email);
     }
 
     const handleGroups = () => {
-        console.log("GROUPS");
         groupsCallback();
+        handleMenuClose();
         store.loadAllPublishedLists();
     }
 
     function handlePerson() {
-        console.log("USER");
+        handleMenuClose();
         userCallback();
     }
 
@@ -57,14 +70,43 @@ function Statusbar(props) {
         communityCallback();
     }
 
-    let statusBarContents = <Fab 
-                                color="primary" 
-                                aria-label="add"
-                                id="add-list-button"
-                                onClick={handleCreateNewList}
-                            >
-                                <AddIcon />
-                            </Fab>
+    function sort(type) {
+        handleMenuClose();
+        store.sortLists(type);
+    }
+
+    let menu = 
+        <Menu
+            anchorEl={anchorEl}
+            anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+            }}
+            id={'primary-search-account-menu'}
+            keepMounted
+            transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+            }}
+            open={isMenuOpen}
+            onClose={handleMenuClose}
+        >
+            <MenuItem onClick={store.sortLists("ascDate")}>Publish Date (Newest)</MenuItem>
+            <MenuItem onClick={store.sortLists("descDate")}>Publish Date (Oldest)</MenuItem>
+            <MenuItem onClick={store.sortLists("views")}>Views</MenuItem>
+            <MenuItem onClick={store.sortLists("likes")}>Likes</MenuItem>
+            <MenuItem onClick={store.sortLists("dislikes")}>Dislikes</MenuItem>
+        </Menu>
+
+    let statusBarContents = 
+            <Fab 
+                color="primary" 
+                aria-label="add"
+                id="add-list-button"
+                onClick={handleCreateNewList}
+            >
+                <AddIcon />
+            </Fab> 
     let component = "";
     let firstColor = "grey";
     let secondColor = "grey";
@@ -75,12 +117,15 @@ function Statusbar(props) {
     }
     else if(tab === "ALL") {
         secondColor = "blue";
+        statusBarContents = <div> All Lists</div>
     }
     else if(tab === "USER") {
         thirdColor = "blue";
+        statusBarContents = <div> User Lists </div>
     }
     else if(tab === "COMMUNITY") {
         fourthColor = "blue";
+        statusBarContents = <div> Community Lists </div>
     }
     if(location.pathname === "/lists/") {
         component = <div id="top5-list-interface">
@@ -110,13 +155,13 @@ function Statusbar(props) {
                                     position: "absolute",
                                     left: "85%",
                                     fontSize: "20pt"
-                                }}> Sort By <SortIcon fontSize = "Small"/> </Typography>
+                                }}> Sort By <SortIcon fontSize = "Small" onClick = {handleProfileMenuOpen}/> </Typography>
                             </Grid>
                         </Grid>
-                        <div id="statusbar">
+                        <Container sx = {{mx: 'auto', position: 'absolute', top: '90%', height: '10%'}}>
                             {statusBarContents}
-                            Your Lists
-                        </div>
+                        </Container>
+                        {menu}
                     </div>
     }
     
