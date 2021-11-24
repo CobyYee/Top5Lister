@@ -238,6 +238,24 @@ function GlobalStoreContextProvider(props) {
         }
     }
 
+    store.addComment = async function (list, comment) {
+        try {
+            let response = await api.getTop5ListById(list._id);
+            if(response.data.success) {
+                let top5List = response.data.top5List;
+                let poster = auth.user.email;
+                top5List.comments.unshift({poster, comment});
+
+                async function updateList(top5List) {
+                    response = await api.updateTop5ListById(top5List._id, top5List);
+                }
+                updateList(top5List);
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     // THIS FUNCTION PROCESSES CLOSING THE CURRENTLY LOADED LIST
     store.closeCurrentList = function () {
         storeReducer({
@@ -256,7 +274,8 @@ function GlobalStoreContextProvider(props) {
             datePublished: null,
             views: 0,
             likes: 0,
-            dislikes: 0
+            dislikes: 0,
+            comments: []
         };
         try {
             const response = await api.createTop5List(payload);

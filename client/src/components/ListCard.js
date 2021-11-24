@@ -27,6 +27,7 @@ function ListCard(props) {
     const { auth } = useContext(AuthContext);
     const [isExpanded, setExpanded] = useState(false);
     const { key, idNamePair } = props;
+    const [ comment, setComment ] = useState("");
 
     function handleLoadList(event, id) {
         if (!event.target.disabled) {
@@ -83,54 +84,60 @@ function ListCard(props) {
         expandIcon = <ExpandLessIcon sx = {{fontSize: "18pt"}}/>
         cardHeight = "300pt";
         listContainer = 
-            <Container id = "list-container">
-                <Grid container spacing={1} border = "1px" rowSpacing = {2} sx = {{top: '4%', position: 'absolute'}}>
-                    <Grid container item spacing={2} sx = {{border: '1px'}}>
-                        <Grid item xs = {0.75} sx = {{fontSize: "24pt", color: 'yellow'}}> 
-                            <div> 1. </div>
+            <Container>
+                <Container id = "list-container">
+                    <Grid container spacing={1} border = "1px" rowSpacing = {2} sx = {{top: '4%', position: 'absolute', width: '50%'}}>
+                        <Grid container item spacing={2} sx = {{border: '1px'}}>
+                            <Grid item xs = {0.75} sx = {{fontSize: "24pt", color: 'yellow'}}> 
+                                <div> 1. </div>
+                            </Grid>
+                            <Grid item xs = {10} sx = {{fontSize: "24pt", width: '84%', position: 'absolute',
+                                left: '10%', borderRadius: '10pt', color: 'yellow'}}> 
+                                <div>  { idNamePair.items[0] } </div>
+                            </Grid>
                         </Grid>
-                        <Grid item xs = {10} sx = {{fontSize: "24pt", width: '84%', position: 'absolute',
-                            left: '10%', borderRadius: '10pt', color: 'yellow'}}> 
-                            <div>  { idNamePair.items[0] } </div>
+                        <Grid container item spacing={2}>
+                            <Grid item xs = {0.75} sx = {{fontSize: "24pt", color: 'yellow'}}> 
+                                <div> 2. </div>
+                            </Grid>
+                            <Grid item xs = {10} sx = {{fontSize: "24pt", width: '84%', position: 'absolute',
+                                left: '10%', borderRadius: '10pt', color: 'yellow'}}> 
+                                <div> { idNamePair.items[1] } </div>
+                            </Grid>
+                        </Grid>
+                        <Grid container item spacing={2} >
+                            <Grid item xs = {0.75} sx = {{fontSize: "24pt", color: 'yellow'}}> 
+                                <div> 3. </div>
+                            </Grid>
+                            <Grid item xs = {10} sx = {{fontSize: "24pt", width: '84%', position: 'absolute',
+                                left: '10%', borderRadius: '10pt', color: 'yellow'}}> 
+                                <div> { idNamePair.items[2] } </div>
+                            </Grid>
+                        </Grid>
+                        <Grid container item spacing={2} >
+                            <Grid item xs = {0.75} sx = {{fontSize: "24pt", color: 'yellow'}}> 
+                                <div> 4. </div>
+                            </Grid>
+                            <Grid item xs = {10} sx = {{fontSize: "24pt", width: '84%', position: 'absolute',
+                                left: '10%', borderRadius: '10pt', color: 'yellow'}}> 
+                                <div> { idNamePair.items[3] } </div>
+                            </Grid>
+                        </Grid>
+                        <Grid container item spacing={2}>
+                            <Grid item xs = {0.75} sx = {{fontSize: "24pt", color: 'yellow'}}> 
+                                <div> 5. </div>
+                            </Grid>
+                            <Grid item xs = {10} sx = {{fontSize: "24pt", width: '84%', position: 'absolute',
+                                left: '10%', borderRadius: '10pt', color: 'yellow'}}> 
+                                <div> { idNamePair.items[4] } </div>
+                            </Grid>
                         </Grid>
                     </Grid>
-                    <Grid container item spacing={2}>
-                        <Grid item xs = {0.75} sx = {{fontSize: "24pt", color: 'yellow'}}> 
-                            <div> 2. </div>
-                        </Grid>
-                        <Grid item xs = {10} sx = {{fontSize: "24pt", width: '84%', position: 'absolute',
-                            left: '10%', borderRadius: '10pt', color: 'yellow'}}> 
-                            <div> { idNamePair.items[1] } </div>
-                        </Grid>
-                    </Grid>
-                    <Grid container item spacing={2} >
-                        <Grid item xs = {0.75} sx = {{fontSize: "24pt", color: 'yellow'}}> 
-                            <div> 3. </div>
-                        </Grid>
-                        <Grid item xs = {10} sx = {{fontSize: "24pt", width: '84%', position: 'absolute',
-                            left: '10%', borderRadius: '10pt', color: 'yellow'}}> 
-                            <div> { idNamePair.items[2] } </div>
-                        </Grid>
-                    </Grid>
-                    <Grid container item spacing={2} >
-                        <Grid item xs = {0.75} sx = {{fontSize: "24pt", color: 'yellow'}}> 
-                            <div> 4. </div>
-                        </Grid>
-                        <Grid item xs = {10} sx = {{fontSize: "24pt", width: '84%', position: 'absolute',
-                            left: '10%', borderRadius: '10pt', color: 'yellow'}}> 
-                            <div> { idNamePair.items[3] } </div>
-                        </Grid>
-                    </Grid>
-                    <Grid container item spacing={2}>
-                        <Grid item xs = {0.75} sx = {{fontSize: "24pt", color: 'yellow'}}> 
-                            <div> 5. </div>
-                        </Grid>
-                        <Grid item xs = {10} sx = {{fontSize: "24pt", width: '84%', position: 'absolute',
-                            left: '10%', borderRadius: '10pt', color: 'yellow'}}> 
-                            <div> { idNamePair.items[4] } </div>
-                        </Grid>
-                    </Grid>
-                </Grid>
+                </Container>
+                <Container id = "comment-section">
+                    <TextField placeholder = "Add a comment" 
+                        sx = {{left: '1%', position: 'absolute', top: '79%', width: '96%'}}/>
+                </Container>
             </Container>
     }
 

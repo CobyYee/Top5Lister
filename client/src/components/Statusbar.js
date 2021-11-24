@@ -70,7 +70,7 @@ function Statusbar(props) {
         communityCallback();
     }
 
-    function sort(type) {
+    function sortList(type) {
         handleMenuClose();
         store.sortLists(type);
     }

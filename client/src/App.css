@@ -175,12 +175,20 @@ body {
 
 #list-container {
   position: absolute;
-  width: 50%;
+  width: 45%;
   left: 20px;
   top: 22%;
   height: 70%;
   border-radius: 15pt;
   background-color: #1B95DB;
+}
+
+#comment-section {
+  position: absolute;
+  width: 51%;
+  left: 48%;
+  top: 22%;
+  height: 70%;
 }
 
 #expand-icon {
