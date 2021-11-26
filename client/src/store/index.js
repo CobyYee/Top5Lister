@@ -238,7 +238,7 @@ function GlobalStoreContextProvider(props) {
         }
     }
 
-    store.addComment = async function (list, comment) {
+    store.postComment = async function (list, comment) {
         try {
             let response = await api.getTop5ListById(list._id);
             if(response.data.success) {

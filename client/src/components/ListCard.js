@@ -36,6 +36,16 @@ function ListCard(props) {
         }
     }
 
+    function handleCommentChange(event) {
+        setComment(event.target.value);
+    }
+
+    function handleKeyPress(event) {
+        if(event.code === "Enter") {
+            store.postComment(idNamePair, comment);
+        }
+    }
+
     function handleToggleExpand(event, id) {
         if(store.currentTab !== "HOME" && !isExpanded) {
             console.log(store.currentTab);
@@ -55,6 +65,15 @@ function ListCard(props) {
     async function handleDeleteList(event, id) {
         event.stopPropagation();
         store.markListForDeletion(id);
+    }
+
+    let comments = "";
+    if(isExpanded) {
+        comments = idNamePair.comments.map((pair) => (
+            <div id = "comment">
+                HI
+            </div>
+        ));
     }
 
     let trashIcon = "";
@@ -134,9 +153,15 @@ function ListCard(props) {
                         </Grid>
                     </Grid>
                 </Container>
+
                 <Container id = "comment-section">
                     <TextField placeholder = "Add a comment" 
-                        sx = {{left: '1%', position: 'absolute', top: '79%', width: '96%'}}/>
+                        sx = {{left: '1%', position: 'absolute', top: '79%', width: '96%', color: 'white'}}
+                        onChange = {handleCommentChange} onKeyPress = {handleKeyPress}
+                    />
+                    <div id = "comment-list">
+                        {comments}
+                    </div>
                 </Container>
             </Container>
     }

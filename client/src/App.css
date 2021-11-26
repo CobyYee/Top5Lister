@@ -191,6 +191,26 @@ body {
   height: 70%;
 }
 
+#comment-list {
+  position: absolute;
+  width: 98%;
+  left: 0%;
+  top: 1%;
+  height: 76%;
+  display: flex;
+  flex-direction: column;
+  overflow: scroll;
+}
+
+#comment {
+  font-size: 10pt;
+  margin: 5px;
+  padding: 15px;
+  border-radius: 10px;
+  color: black;
+  background-color: #c49f28;
+}
+
 #expand-icon {
   width: 4%;
   left: 96%;
