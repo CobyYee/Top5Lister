@@ -54,12 +54,12 @@ function ListCard(props) {
         setExpanded(!isExpanded);
     }
 
-    function handleLikeList(event, id) {
-
+    function handleLikeList() {
+        store.likeList(idNamePair);
     }
 
-    function handleDislikeList(event, id) {
-
+    function handleDislikeList() {
+        store.dislikeList(idNamePair);
     }
 
     async function handleDeleteList(event, id) {
@@ -85,6 +85,15 @@ function ListCard(props) {
             </IconButton>
     }
 
+    let likeColor = "grey";
+    let dislikeColor = "grey";
+    if(store.isListLiked(idNamePair)) {
+        likeColor = "blue";
+    }
+    if(store.isListDisliked(idNamePair)) {
+        dislikeColor = "blue";
+    }
+
     let editButton = 
         <Button sx={{fontSize: "8pt", left: '10px', top: '50px', position: 'absolute'}} variant = "outlined" 
             onClick = {(event) => {handleLoadList(event, idNamePair._id)}}> 
@@ -103,7 +112,7 @@ function ListCard(props) {
         expandIcon = <ExpandLessIcon sx = {{fontSize: "18pt"}}/>
         cardHeight = "300pt";
         listContainer = 
-            <Container>
+            <Container id = "list-card">
                 <Container id = "list-container">
                     <Grid container spacing={1} border = "1px" rowSpacing = {2} sx = {{top: '4%', position: 'absolute', width: '50%'}}>
                         <Grid container item spacing={2} sx = {{border: '1px'}}>
@@ -175,15 +184,17 @@ function ListCard(props) {
                 {editButton}
                 <Box sx={{ p: 1 }} id = "list-buttons">
                     <IconButton onClick={(event) => {
-                        handleLikeList(event, idNamePair._id)
+                        handleLikeList()
                     }}>
-                        <LikeIcon style={{fontSize:'18pt'}} />
+                        <LikeIcon style={{fontSize:'18pt', color: likeColor}} />
                     </IconButton>
+                    <span> {idNamePair.likes} </span>
                     <IconButton onClick={(event) => {
-                        handleDislikeList(event, idNamePair._id)
+                        handleDislikeList()
                     }}>
-                        <DislikeIcon style={{fontSize:'18pt'}}/>
+                        <DislikeIcon style={{fontSize:'18pt', color: dislikeColor}}/>
                     </IconButton>
+                    <span> {idNamePair.dislikes} </span>
                     {trashIcon}
                 </Box>
                 <Box id = "expand-icon">

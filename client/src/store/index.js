@@ -256,6 +256,80 @@ function GlobalStoreContextProvider(props) {
         }
     }
 
+    store.likeList = async function (list) {
+        try {
+            let response = await api.getTop5ListById(list._id);
+            if(response.data.success) {
+                let top5List = response.data.top5List;
+                let userEmail = auth.user.email;
+                let index = top5List.emailDislikes.indexOf(userEmail);
+                if(index !== -1) {
+                    top5List.emailDislikes.splice(index, 1);
+                    top5List.dislikes -= 1;
+                }
+                else {
+                }
+                if(top5List.emailLikes.indexOf(userEmail) !== -1) {
+                }
+                else {
+                    top5List.emailLikes.push(userEmail);
+                    top5List.likes += 1;
+                }
+                async function updateList(top5List) {
+                    response = await api.updateTop5ListById(top5List._id, top5List);
+                }
+                updateList(top5List);
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    store.isListLiked = function (list) {
+        let userEmail = auth.user.email;
+        if(list.emailLikes.indexOf(userEmail) !== -1) {
+            return true;
+        }
+        return false;
+    }
+
+    store.isListDisliked = function (list) {
+        let userEmail = auth.user.email;
+        if(list.emailDislikes.indexOf(userEmail) !== -1) {
+            return true;
+        }
+        return false;
+    }
+
+    store.dislikeList = async function (list) {
+        try {
+            let response = await api.getTop5ListById(list._id);
+            if(response.data.success) {
+                let top5List = response.data.top5List;
+                let userEmail = auth.user.email;
+                let index = top5List.emailLikes.indexOf(userEmail);
+                if(index !== -1) {
+                    top5List.emailLikes.splice(index, 1);
+                    top5List.likes -= 1;
+                }
+                else {
+                }
+                if(top5List.emailDislikes.indexOf(userEmail) !== -1) {
+                }
+                else {
+                    top5List.emailDislikes.push(userEmail);
+                    top5List.dislikes += 1;
+                }
+                async function updateList(top5List) {
+                    response = await api.updateTop5ListById(top5List._id, top5List);
+                }
+                updateList(top5List);
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     // THIS FUNCTION PROCESSES CLOSING THE CURRENTLY LOADED LIST
     store.closeCurrentList = function () {
         storeReducer({
@@ -275,7 +349,9 @@ function GlobalStoreContextProvider(props) {
             views: 0,
             likes: 0,
             dislikes: 0,
-            comments: []
+            comments: [],
+            emailLikes: [],
+            emailDislikes: []
         };
         try {
             const response = await api.createTop5List(payload);
