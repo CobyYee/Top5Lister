@@ -546,6 +546,36 @@ function GlobalStoreContextProvider(props) {
         }
     }
 
+    // THIS FUNCTION CHECKS IF THE USER HAS A LIST WITH A SPECIFIED NAME 
+    store.isNameAvailable = async function (name) {
+        try {
+            let response = await api.getTop5ListPairs();
+            if (response.data.success) {
+                let pairsArray = response.data.idNamePairs;
+                for(let i = 0; i < pairsArray.length; i++) {
+                    let response2 = await api.getTop5ListById(pairsArray[i]._id);
+                    if(response2.data.top5List.name === name) {
+                        console.log("01");
+                        if(response2.data.top5List.ownerEmail === auth.user.email) {
+                            console.log("02");
+                            if(response2.data.top5List.datePublished !== null) {
+                                console.log("03");
+                                console.log("returning false");
+                                return false;
+                            }
+                        }
+                    }
+                }
+
+                console.log("return true");
+                return true;
+            }
+        }
+        catch (err) {
+            console.log(err);
+        }
+    }
+
     // THIS FUNCTION SEARCHES THROUGH LISTS FOR LISTS THAT START WITH THE SPECIFIED STRING
     store.searchLists = async function (str) {
 

@@ -17,9 +17,10 @@ function WorkspaceScreen() {
     const { store } = useContext(GlobalStoreContext);
     const [ listName, setListName ] = useState(store.currentList.name);
 
-    const saveList = function () {
-        store.changeListName(store.currentList._id, listName);
-        store.closeCurrentList();
+    const handleListKeyPress = function (event) {
+        if(listName !== "" && event.code === "Enter") {
+            store.changeListName(store.currentList._id, listName);
+        }
     }
 
     function hasRepetitions(arr) {
@@ -33,30 +34,40 @@ function WorkspaceScreen() {
         return false;
     }
 
+    function saveList() {
+        store.changeListName(store.currentList._id, listName);
+        store.closeCurrentList();
+    }
+
     function publishList() {
-        if(listName === "") {
-            console.log("Can't publish a list without a title");
-        }
-        else if(store.currentList.items[0] === "" || store.currentList.items[1] === "" || store.currentList.items[2] === "" || store.currentList.items[3] === "" || store.currentList.items[4] === "") {
-            console.log("Can't publish a list when one of the items is empty");
-        }
-        else if(hasRepetitions(store.currentList.items)) {
-            console.log("Can't publish a list with repeating items.");
-        }
-        else {
-            store.setListPublished();
-            saveList();
-        }
+        store.changeListName(store.currentList._id, listName);
+        store.setListPublished();
+        store.closeCurrentList();
     }
 
     function handleUpdate (event) {
         setListName(event.target.value);
     }
 
+    let publishDisabled = false;
+    if(listName === "") {
+        publishDisabled = true;
+    }
+    else if(store.currentList.items[0] === "" || store.currentList.items[1] === "" || store.currentList.items[2] === "" || store.currentList.items[3] === "" || store.currentList.items[4] === "") {
+        publishDisabled = true;
+    }
+    else if(hasRepetitions(store.currentList.items)) {
+        publishDisabled = true;
+    } 
+    else if(!store.isNameAvailable()) {
+        publishDisabled = true;
+    }
+    
+
     return (
         <div id="top5-workspace">
             <TextField defaultValue = {store.currentList.name} id = "list-name" size = "small" sx = {{width: '300px', left: '10px'}}
-                onChange = {handleUpdate}/>
+                onChange = {handleUpdate} onKeyPress = {handleListKeyPress}/>
             <div id="workspace-edit">
                 
             <Container id = "item-container">
@@ -122,7 +133,7 @@ function WorkspaceScreen() {
             <div id = "workspaceButtons">
                 <Button variant = "contained" onClick = {saveList}> Save </Button>
                 &nbsp;&nbsp;&nbsp;
-                <Button variant = "contained" onClick = {publishList}> Publish </Button>
+                <Button variant = "contained" onClick = {publishList} disabled = {publishDisabled}> Publish </Button>
             </div>
         </div>
     )

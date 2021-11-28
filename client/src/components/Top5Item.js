@@ -32,7 +32,7 @@ function Top5Item(props) {
     }
 
     function handleKeyPress(event) {
-        if (event.code === "Enter") {
+        if (event.code === "Enter" && text !== "") {
             let id = event.target.id.substring("item-".length);
             store.updateItem(id, event.target.value);
             toggleEdit();
