@@ -34,7 +34,7 @@ const HomeScreen = () => {
         listCard = 
             <List sx={{ width: '96%', left: '2%', bgcolor: '#81CAF5', border: '1pt', borderColor: 'black'}}>
             {
-                store.lists.map((pair) => (
+                store.shownLists.map((pair) => (
                     <ListCard
                         key={pair._id}
                         idNamePair={pair}

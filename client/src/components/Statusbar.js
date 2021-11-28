@@ -16,6 +16,8 @@ import AuthContext from '../auth'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import Container from '@mui/material/Container'
+import List from '@mui/material/List'
+import ListItem from '@mui/material/ListItem'
 
 /*
     Our Status bar React component goes at the bottom of our UI.
@@ -50,18 +52,18 @@ function Statusbar(props) {
 
     const handleHome = (event) => {
         homeCallback();
-        handleMenuClose();
+        //handleMenuClose();
         store.loadUserIdNamePairs(auth.user.email);
     }
 
     const handleGroups = () => {
         groupsCallback();
-        handleMenuClose();
+        //handleMenuClose();
         store.loadAllPublishedLists();
     }
 
     function handlePerson() {
-        handleMenuClose();
+        //handleMenuClose();
         userCallback();
     }
 
@@ -75,29 +77,32 @@ function Statusbar(props) {
         store.sortLists(type);
     }
 
-    let menu = 
-        <Menu
-            anchorEl={anchorEl}
-            anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-            }}
-            id={'primary-search-account-menu'}
-            keepMounted
-            transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-            }}
-            open={isMenuOpen}
-            onClose={handleMenuClose}
-        >
-            <MenuItem onClick={store.sortLists("ascDate")}>Publish Date (Newest)</MenuItem>
-            <MenuItem onClick={store.sortLists("descDate")}>Publish Date (Oldest)</MenuItem>
-            <MenuItem onClick={store.sortLists("views")}>Views</MenuItem>
-            <MenuItem onClick={store.sortLists("likes")}>Likes</MenuItem>
-            <MenuItem onClick={store.sortLists("dislikes")}>Dislikes</MenuItem>
-        </Menu>
-
+    const sortAscDate = (event) => {
+        event.stopPropagation();
+        handleMenuClose();
+        store.sortLists("ascDate");
+    }
+    const sortDescDate = (event) => {
+        event.stopPropagation();
+        handleMenuClose();
+        store.sortLists("descDate");
+    }
+    const sortViews = (event) => {
+        event.stopPropagation();
+        handleMenuClose();
+        store.sortLists("views");
+    }
+    const sortLikes = (event) => {
+        event.stopPropagation();
+        handleMenuClose();
+        store.sortLists("likes");
+    }
+    const sortDislikes = (event) => {
+        event.stopPropagation();
+        handleMenuClose();
+        store.sortLists("dislikes");
+    }
+    
     let statusBarContents = 
             <Fab 
                 color="primary" 
@@ -161,7 +166,27 @@ function Statusbar(props) {
                         <Container sx = {{mx: 'auto', position: 'absolute', top: '90%', height: '10%'}}>
                             {statusBarContents}
                         </Container>
-                        {menu}
+
+                        <Menu
+                            anchorEl={anchorEl}
+                            anchorOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            keepMounted
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            open={isMenuOpen}
+                            onClose={handleMenuClose}
+                        >
+                            <MenuItem onClick={sortAscDate}>Publish Date (Newest)</MenuItem>
+                            <MenuItem onClick={sortDescDate}>Publish Date (Oldest)</MenuItem>
+                            <MenuItem onClick={sortViews}>Views</MenuItem>
+                            <MenuItem onClick={sortLikes}>Likes</MenuItem>
+                            <MenuItem onClick={sortDislikes}>Dislikes</MenuItem>
+                        </Menu>
                     </div>
     }
     

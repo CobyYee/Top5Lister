@@ -94,17 +94,31 @@ function ListCard(props) {
         dislikeColor = "blue";
     }
 
+    let publishView = "";
+    let viewHeight = '53%';
+
+    let dateObj = "";
+    if(idNamePair.datePublished !== null) {
+        let dateMS = Date.parse(idNamePair.datePublished);
+        dateObj = new Date(dateMS);
+    }
+
+    if(isExpanded) {
+        viewHeight = '94%';
+    }
+
     let editButton = 
         <Button sx={{fontSize: "8pt", left: '10px', top: '50px', position: 'absolute'}} variant = "outlined" 
             onClick = {(event) => {handleLoadList(event, idNamePair._id)}}> 
             Edit 
-        </Button>;
+        </Button>
     if(idNamePair.datePublished) {
         editButton = 
-            <div id = "views-display">
-                Views: {idNamePair.views}
-            </div>
+            <Box sx = {{fontSize: '12pt', position: 'absolute', left: '1%', top: viewHeight}}>
+                Published: {(dateObj.getMonth()+1) + "/" + dateObj.getDate() + "/" + dateObj.getFullYear()}
+            </Box>
     }
+
     let expandIcon = <ExpandMoreIcon sx = {{fontSize: "18pt"}}/>
     let cardHeight = "80pt";
     let listContainer = "";
@@ -204,6 +218,10 @@ function ListCard(props) {
                         {expandIcon}
                     </IconButton>
                 </Box>
+                <Box sx = {{fontSize: '12pt', position: 'absolute', left: '86%', top: viewHeight}}>
+                    Views: {idNamePair.views}
+                </Box>
+                {publishView}
             </div>
         </ListItem>
     return (
