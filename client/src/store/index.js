@@ -578,7 +578,21 @@ function GlobalStoreContextProvider(props) {
 
     // THIS FUNCTION SEARCHES THROUGH LISTS FOR LISTS THAT START WITH THE SPECIFIED STRING
     store.searchLists = async function (str) {
-
+        let arr = [];
+        if(str === "") {
+            arr = store.lists;
+        }
+        else {
+            for(let i = 0; i < store.lists.length; i++){
+                if(store.lists[i].name.startsWith(str)){
+                    arr.push(store.lists[i]);
+                }
+            }
+        }
+        storeReducer({
+            type: GlobalStoreActionType.SET_LIST_VIEW,
+            payload: arr
+        })
     }
 
     store.deleteList = async function (listToDelete) {

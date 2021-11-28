@@ -28,6 +28,7 @@ function Statusbar(props) {
     const { store } = useContext(GlobalStoreContext);
     const { auth } = useContext(AuthContext);
     const [anchorEl, setAnchorEl] = useState(null);
+    const [searchText, setSearch] = useState("");
     const isMenuOpen = Boolean(anchorEl);
     let text = "";
 
@@ -44,6 +45,16 @@ function Statusbar(props) {
     let thirdColor = "grey";
     let fourthColor = "grey";
     let statusBarDisabled = false;
+
+    const handleKeyPress = (event) => {
+        if(event.code === "Enter") {
+            store.searchLists(searchText);
+        }
+    }
+
+    const handleChange = (event) => {
+        setSearch(event.target.value);
+    }
 
     const handleProfileMenuOpen = (event) => {
         if(!statusBarDisabled) {
@@ -111,6 +122,16 @@ function Statusbar(props) {
         handleMenuClose();
         store.sortLists("dislikes");
     }
+    let statusBarContents = 
+            <Fab 
+                color="primary" 
+                aria-label="add"
+                id="add-list-button"
+                onClick={handleCreateNewList}
+                disabled = {statusBarDisabled}
+            >
+                <AddIcon />
+            </Fab> 
 
     if(store.currentList !== null){
         statusBarDisabled = true;
@@ -130,16 +151,6 @@ function Statusbar(props) {
         fourthColor = "blue";
         statusBarContents = <div> Community Lists </div>
     }
-    let statusBarContents = 
-            <Fab 
-                color="primary" 
-                aria-label="add"
-                id="add-list-button"
-                onClick={handleCreateNewList}
-                disabled = {statusBarDisabled}
-            >
-                <AddIcon />
-            </Fab> 
     if(location.pathname === "/lists/") {
         component = <div id="top5-list-interface">
                         <Grid container spacing = {2} >
@@ -161,7 +172,8 @@ function Statusbar(props) {
                                 </IconButton>
                             </Grid>
                             <Grid item xs = {4} >
-                                <TextField placeholder = "Search" size="small" sx = {{width: "100%"}} disabled = {statusBarDisabled}/>
+                                <TextField placeholder = "Search" size="small" sx = {{width: "100%"}} disabled = {statusBarDisabled}
+                                    onChange = {handleChange} onKeyPress = {handleKeyPress}/>
                             </Grid>
                             <Grid item xs = {4} >
                                 <Typography style = {{
