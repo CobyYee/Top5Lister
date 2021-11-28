@@ -37,9 +37,18 @@ function Statusbar(props) {
     if (store.currentList) {
         text = store.currentList.name;
     }
+    
+    let component = "";
+    let firstColor = "grey";
+    let secondColor = "grey";
+    let thirdColor = "grey";
+    let fourthColor = "grey";
+    let statusBarDisabled = false;
 
     const handleProfileMenuOpen = (event) => {
-        setAnchorEl(event.currentTarget);
+        if(!statusBarDisabled) {
+            setAnchorEl(event.currentTarget);
+        }
     };
 
     const handleMenuClose = () => {
@@ -68,7 +77,7 @@ function Statusbar(props) {
     }
 
     function handleCommunity() {
-        console.log("COMMUNITY");
+        //console.log("COMMUNITY");
         communityCallback();
     }
 
@@ -102,58 +111,57 @@ function Statusbar(props) {
         handleMenuClose();
         store.sortLists("dislikes");
     }
-    
+
+    if(store.currentList !== null){
+        statusBarDisabled = true;
+    }
+    if(tab === "HOME" && store.currentList === null) {
+        firstColor = "blue";
+    }
+    else if(tab === "ALL" && store.currentList === null) {
+        secondColor = "blue";
+        statusBarContents = <div> All Lists</div>
+    }
+    else if(tab === "USER" && store.currentList === null) {
+        thirdColor = "blue";
+        statusBarContents = <div> User Lists </div>
+    }
+    else if(tab === "COMMUNITY" && store.currentList === null) {
+        fourthColor = "blue";
+        statusBarContents = <div> Community Lists </div>
+    }
     let statusBarContents = 
             <Fab 
                 color="primary" 
                 aria-label="add"
                 id="add-list-button"
                 onClick={handleCreateNewList}
+                disabled = {statusBarDisabled}
             >
                 <AddIcon />
             </Fab> 
-    let component = "";
-    let firstColor = "grey";
-    let secondColor = "grey";
-    let thirdColor = "grey";
-    let fourthColor = "grey";
-    if(tab === "HOME") {
-        firstColor = "blue";
-    }
-    else if(tab === "ALL") {
-        secondColor = "blue";
-        statusBarContents = <div> All Lists</div>
-    }
-    else if(tab === "USER") {
-        thirdColor = "blue";
-        statusBarContents = <div> User Lists </div>
-    }
-    else if(tab === "COMMUNITY") {
-        fourthColor = "blue";
-        statusBarContents = <div> Community Lists </div>
-    }
     if(location.pathname === "/lists/") {
         component = <div id="top5-list-interface">
                         <Grid container spacing = {2} >
                             <Grid item xs = {4} >
-                                <IconButton onClick = {(event) => {handleHome(event)}} >
+                                <IconButton onClick = {(event) => {handleHome(event)}} disabled = {statusBarDisabled}>
                                     <HomeIcon style = {{fontSize:'30pt', position: 'absolute', left: '2%', color: firstColor}}/>
                                 </IconButton>
                                 &nbsp;&nbsp;
-                                <IconButton onClick = {handleGroups}>
+                                <IconButton onClick = {handleGroups} disabled = {statusBarDisabled}>
                                     <GroupsIcon style = {{fontSize:'30pt', position: 'absolute', left: '22%', color: secondColor}}/>
                                 </IconButton>
                                 &nbsp;&nbsp;
-                                <IconButton onClick = {handlePerson}>
+                                <IconButton onClick = {handlePerson} disabled = {statusBarDisabled}>
                                     <PersonIcon style = {{fontSize:'30pt', position: 'absolute', left: '42%', color: thirdColor}}/>
                                 </IconButton>
                                 &nbsp;&nbsp;
-                                <IconButton onClick = {handleCommunity}>
+                                <IconButton onClick = {handleCommunity} disabled = {statusBarDisabled}>
                                     <FunctionsIcon style = {{fontSize:'30pt', position: 'absolute', left: '62%', color: fourthColor}}/>
                                 </IconButton>
                             </Grid>
                             <Grid item xs = {4} >
-                                <TextField placeholder = "Search" size="small" sx = {{width: "100%"}}/>
+                                <TextField placeholder = "Search" size="small" sx = {{width: "100%"}} disabled = {statusBarDisabled}/>
                             </Grid>
                             <Grid item xs = {4} >
                                 <Typography style = {{
