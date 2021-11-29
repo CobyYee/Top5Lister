@@ -97,10 +97,12 @@ function ListCard(props) {
     let publishView = "";
     let viewHeight = '53%';
 
+    let bgColor = "#FDEFEF"
     let dateObj = "";
     if(idNamePair.datePublished !== null) {
         let dateMS = Date.parse(idNamePair.datePublished);
         dateObj = new Date(dateMS);
+        bgColor = "#CBD6FA"
     }
 
     if(isExpanded) {
@@ -190,7 +192,7 @@ function ListCard(props) {
     }
 
     let cardElement =
-        <ListItem sx = {{height: cardHeight, bgColor: "#1B95DB"}}>
+        <ListItem sx = {{height: cardHeight, bgcolor: bgColor, borderRadius: '16px', border: '2px solid', mt: 1}}>
             <div>
                 <Box sx={{fontSize: "18pt", left: '10px', top: '10px', position: 'absolute'}}>{idNamePair.name}</Box>
                 <Box sx={{fontSize: "12pt", left: '10px', top: '30px', position: 'absolute'}}>By: {idNamePair.ownerEmail}</Box>

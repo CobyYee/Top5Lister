@@ -77,21 +77,25 @@ function Statusbar(props) {
     }
 
     const handleHome = (event) => {
+        setSearch("");
         homeCallback();
         store.loadUserIdNamePairs(auth.user.email);
     }
 
     const handleGroups = () => {
+        setSearch("");
         groupsCallback();
         store.loadAllPublishedLists();
     }
 
     function handlePerson() {
+        setSearch("");
         userCallback();
         store.clearShownLists();
     }
 
     function handleCommunity() {
+        setSearch("");
         //console.log("COMMUNITY");
         communityCallback();
     }
@@ -177,7 +181,7 @@ function Statusbar(props) {
                             </Grid>
                             <Grid item xs = {4} >
                                 <TextField placeholder = "Search" size="small" sx = {{width: "100%"}} disabled = {statusBarDisabled}
-                                    onChange = {handleChange} onKeyPress = {handleKeyPress}/>
+                                    onChange = {handleChange} onKeyPress = {handleKeyPress} value = {searchText}/>
                             </Grid>
                             <Grid item xs = {4} >
                                 <Typography style = {{
