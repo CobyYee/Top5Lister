@@ -129,7 +129,7 @@ body {
   width: 100%;
   height: 90%;
   background-color: white;
-  display: flex;
+  
   justify-content: left;
   font-size: 36pt;
 }
@@ -159,10 +159,6 @@ body {
   position: absolute;
   left: 83%;
   top: 92%;
-}
-
-#add-list-button {
-  float: left;
 }
 
 #list-buttons {
@@ -213,9 +209,9 @@ body {
 
 #expand-icon {
   width: 4%;
-  left: 93%;
+  left: 95%;
   height: 10%;
-  top: 35pt;
+  top: 60px;
   position: absolute;
 }
 #list-selector-list {

@@ -43,6 +43,7 @@ function ListCard(props) {
     function handleKeyPress(event) {
         if(event.code === "Enter") {
             store.postComment(idNamePair, comment);
+            setComment("");
         }
     }
 
@@ -95,7 +96,7 @@ function ListCard(props) {
     }
 
     let publishView = "";
-    let viewHeight = '53%';
+    let viewHeight = '70%';
 
     let bgColor = "#FDEFEF"
     let dateObj = "";
@@ -110,7 +111,7 @@ function ListCard(props) {
     }
 
     let editButton = 
-        <Button sx={{fontSize: "8pt", left: '10px', top: '50px', position: 'absolute'}} variant = "outlined" 
+        <Button sx={{fontSize: "8pt", left: '10px', top: '65px', position: 'absolute'}} variant = "text" 
             onClick = {(event) => {handleLoadList(event, idNamePair._id)}}> 
             Edit 
         </Button>
@@ -182,7 +183,7 @@ function ListCard(props) {
                 <Container id = "comment-section">
                     <TextField placeholder = "Add a comment" 
                         sx = {{left: '1%', position: 'absolute', top: '79%', width: '96%', color: 'white'}}
-                        onChange = {handleCommentChange} onKeyPress = {handleKeyPress}
+                        onChange = {handleCommentChange} onKeyPress = {handleKeyPress} value = {comment}
                     />
                     <div id = "comment-list">
                         {comments}
@@ -194,8 +195,8 @@ function ListCard(props) {
     let cardElement =
         <ListItem sx = {{height: cardHeight, bgcolor: bgColor, borderRadius: '16px', border: '2px solid', mt: 1}}>
             <div>
-                <Box sx={{fontSize: "18pt", left: '10px', top: '10px', position: 'absolute'}}>{idNamePair.name}</Box>
-                <Box sx={{fontSize: "12pt", left: '10px', top: '30px', position: 'absolute'}}>By: {idNamePair.ownerEmail}</Box>
+                <Box sx={{fontSize: "20pt", left: '10px', top: '10px', position: 'absolute'}}>{idNamePair.name}</Box>
+                <Box sx={{fontSize: "12pt", left: '10px', top: '40px', position: 'absolute'}}>By: {idNamePair.ownerEmail}</Box>
                 {listContainer}
                 {editButton}
                 <Box sx={{ p: 1 }} id = "list-buttons">
@@ -220,7 +221,7 @@ function ListCard(props) {
                         {expandIcon}
                     </IconButton>
                 </Box>
-                <Box sx = {{fontSize: '12pt', position: 'absolute', left: '86%', top: viewHeight}}>
+                <Box sx = {{fontSize: '12pt', position: 'absolute', left: '88%', top: viewHeight}}>
                     Views: {idNamePair.views}
                 </Box>
                 {publishView}

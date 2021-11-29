@@ -47,12 +47,31 @@ function Statusbar(props) {
     let fourthColor = "grey";
     let statusBarDisabled = false;
 
+    const handleCreateNewList = () => {
+        store.createNewList();
+    }
+
+    let statusBarContents = 
+        <Box>
+            <Fab 
+                color="primary" 
+                aria-label="add"
+                id="add-list-button"
+                onClick={handleCreateNewList}
+                disabled = {statusBarDisabled}
+            >
+                <AddIcon />
+            </Fab>
+            Your Lists
+        </Box>
+
     const handleKeyPress = (event) => {
         if(event.code === "Enter") {
             if(tab !== "USER") {
                 store.searchLists(searchText);
             }
             else {
+                statusBarContents = <div> {searchText} </div>;
                 store.loadUserIdNamePairs(searchText);
             }
         }
@@ -71,10 +90,6 @@ function Statusbar(props) {
     const handleMenuClose = () => {
         setAnchorEl(null);
     };
-
-    const handleCreateNewList = () => {
-        store.createNewList();
-    }
 
     const handleHome = (event) => {
         setSearch("");
@@ -130,16 +145,6 @@ function Statusbar(props) {
         handleMenuClose();
         store.sortLists("dislikes");
     }
-    let statusBarContents = 
-            <Fab 
-                color="primary" 
-                aria-label="add"
-                id="add-list-button"
-                onClick={handleCreateNewList}
-                disabled = {statusBarDisabled}
-            >
-                <AddIcon />
-            </Fab> 
 
     if(store.currentList !== null){
         statusBarDisabled = true;
@@ -149,7 +154,7 @@ function Statusbar(props) {
     }
     else if(tab === "ALL" && store.currentList === null) {
         secondColor = "blue";
-        statusBarContents = <div> All Lists</div>
+        statusBarContents = <div> All Lists </div>
     }
     else if(tab === "USER" && store.currentList === null) {
         thirdColor = "blue";
@@ -161,7 +166,7 @@ function Statusbar(props) {
     }
     if(location.pathname === "/lists/") {
         component = <div id="top5-list-interface">
-                        <Grid container spacing = {2} >
+                        <Grid container spacing = {2}  >
                             <Grid item xs = {4} >
                                 <IconButton onClick = {(event) => {handleHome(event)}} disabled = {statusBarDisabled}>
                                     <HomeIcon style = {{fontSize:'30pt', position: 'absolute', left: '2%', color: firstColor}}/>
@@ -191,7 +196,7 @@ function Statusbar(props) {
                                 }}> Sort By <SortIcon fontSize = "Small" onClick = {handleProfileMenuOpen}/> </Typography>
                             </Grid>
                         </Grid>
-                        <Box sx = {{mx: 'auto', position: 'absolute', top: '90%', height: '10%', align: 'center'}}>
+                        <Box sx = {{display: 'flex', height: '10%', width: '100%', justifyContent: 'center', top: '90%', position: 'absolute'}}>
                             {statusBarContents}
                         </Box>
 
