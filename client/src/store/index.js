@@ -329,18 +329,24 @@ function GlobalStoreContextProvider(props) {
 
     // CHECKS TO SEE IF THE CURRENT USER HAS LIKED A LIST
     store.isListLiked = function (list) {
-        let userEmail = auth.user.email;
-        if(list.emailLikes.indexOf(userEmail) !== -1) {
-            return true;
+        if(auth.user !== null) {
+            let userEmail = auth.user.email;
+            if(list.emailLikes.indexOf(userEmail) !== -1) {
+                return true;
+            }
+            return false;
         }
         return false;
     }
 
     // CHECKS TO SEE IF THE CURRENT USER HAS DISLIKED A LIST
     store.isListDisliked = function (list) {
-        let userEmail = auth.user.email;
-        if(list.emailDislikes.indexOf(userEmail) !== -1) {
-            return true;
+        if(auth.user !== null) {
+            let userEmail = auth.user.email;
+            if(list.emailDislikes.indexOf(userEmail) !== -1) {
+                return true;
+            }
+            return false;
         }
         return false;
     }

@@ -39,6 +39,11 @@ function Statusbar(props) {
     if (store.currentList) {
         text = store.currentList.name;
     }
+
+    let isHomeDisabled = false;
+    if(auth.user === null || store.currentList !== null) {
+        isHomeDisabled = true;
+    }
     
     let component = "";
     let firstColor = "grey";
@@ -168,7 +173,7 @@ function Statusbar(props) {
         component = <div id="top5-list-interface">
                         <Grid container spacing = {2}  >
                             <Grid item xs = {4} >
-                                <IconButton onClick = {(event) => {handleHome(event)}} disabled = {statusBarDisabled}>
+                                <IconButton onClick = {(event) => {handleHome(event)}} disabled = {isHomeDisabled}>
                                     <HomeIcon style = {{fontSize:'30pt', position: 'absolute', left: '2%', color: firstColor}}/>
                                 </IconButton>
                                 &nbsp;&nbsp;

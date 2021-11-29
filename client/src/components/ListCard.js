@@ -78,7 +78,7 @@ function ListCard(props) {
     }
 
     let trashIcon = "";
-    if(auth.user.email === idNamePair.ownerEmail) {
+    if(auth.user !== null && auth.user.email === idNamePair.ownerEmail) {
         trashIcon =
             <IconButton onClick={(event) => {
                 handleDeleteList(event, idNamePair._id)}} aria-label='delete'>
