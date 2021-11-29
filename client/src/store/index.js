@@ -498,6 +498,14 @@ function GlobalStoreContextProvider(props) {
         });
     }
 
+    store.clearShownLists = async function () {
+        let lists = [];
+        storeReducer({
+            type: GlobalStoreActionType.LOAD_LISTS_ARRAY,
+            payload: lists
+        })
+    }
+
     store.sortLists = function (sortType) {
         console.log(store.lists);
         if(sortType === "descDate") {

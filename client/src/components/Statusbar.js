@@ -49,7 +49,12 @@ function Statusbar(props) {
 
     const handleKeyPress = (event) => {
         if(event.code === "Enter") {
-            store.searchLists(searchText);
+            if(tab !== "USER") {
+                store.searchLists(searchText);
+            }
+            else {
+                store.loadUserIdNamePairs(searchText);
+            }
         }
     }
 
@@ -73,19 +78,17 @@ function Statusbar(props) {
 
     const handleHome = (event) => {
         homeCallback();
-        //handleMenuClose();
         store.loadUserIdNamePairs(auth.user.email);
     }
 
     const handleGroups = () => {
         groupsCallback();
-        //handleMenuClose();
         store.loadAllPublishedLists();
     }
 
     function handlePerson() {
-        //handleMenuClose();
         userCallback();
+        store.clearShownLists();
     }
 
     function handleCommunity() {
