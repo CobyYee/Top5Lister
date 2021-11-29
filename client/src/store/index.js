@@ -184,7 +184,6 @@ function GlobalStoreContextProvider(props) {
                 })
             }
             case GlobalStoreActionType.SET_LIST_VIEW: {
-                //console.log("Payload is: " + payload);
                 return setStore({
                     idNamePairs: store.idNamePairs,
                     currentList: store.currentList,
@@ -292,6 +291,10 @@ function GlobalStoreContextProvider(props) {
                     response = await api.updateTop5ListById(top5List._id, top5List);
                 }
                 updateList(top5List);
+                storeReducer({
+                    type: GlobalStoreActionType.RELOAD_STATE,
+                    payload: null
+                });
             }
         } catch (err) {
             console.log(err);

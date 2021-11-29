@@ -18,6 +18,7 @@ import MenuItem from '@mui/material/MenuItem'
 import Container from '@mui/material/Container'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
+import Box from '@mui/material/Box'
 
 /*
     Our Status bar React component goes at the bottom of our UI.
@@ -183,9 +184,9 @@ function Statusbar(props) {
                                 }}> Sort By <SortIcon fontSize = "Small" onClick = {handleProfileMenuOpen}/> </Typography>
                             </Grid>
                         </Grid>
-                        <Container sx = {{mx: 'auto', position: 'absolute', top: '90%', height: '10%'}}>
+                        <Box sx = {{mx: 'auto', position: 'absolute', top: '90%', height: '10%', align: 'center'}}>
                             {statusBarContents}
-                        </Container>
+                        </Box>
 
                         <Menu
                             anchorEl={anchorEl}

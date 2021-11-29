@@ -71,7 +71,7 @@ function ListCard(props) {
     if(isExpanded) {
         comments = idNamePair.comments.map((pair) => (
             <div id = "comment">
-                HI
+                {pair.poster} <br/> {pair.comment}
             </div>
         ));
     }
