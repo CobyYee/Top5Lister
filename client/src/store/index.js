@@ -263,6 +263,7 @@ function GlobalStoreContextProvider(props) {
                         name: newListName,
                         items: ["?", "?", "?", "?", "?"],
                         ownerEmail: null,
+                        ownerUsername: null,
                         datePublished: top5List.datePublished,
                         views: 0,
                         likes: 0,
@@ -349,7 +350,7 @@ function GlobalStoreContextProvider(props) {
     // HANDLES THE CURRENT USER POSTING A COMMENT ON A LIST
     store.postComment = async function (list, comment) {
         let top5List = list;
-        let poster = auth.user.email;
+        let poster = auth.user.username;
         top5List.comments.unshift({poster, comment});
 
         let response = await api.updateTop5ListById(top5List._id, top5List);
@@ -463,6 +464,7 @@ function GlobalStoreContextProvider(props) {
             name: newListName,
             items: ["?", "?", "?", "?", "?"],
             ownerEmail: auth.user.email,
+            ownerUsername: auth.user.username,
             datePublished: null,
             views: 0,
             likes: 0,

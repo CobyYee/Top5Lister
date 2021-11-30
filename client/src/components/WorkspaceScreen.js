@@ -40,7 +40,6 @@ function WorkspaceScreen() {
 
     function publishList() {
         store.setListPublished(listName);
-        store.closeCurrentList();
     }
 
     function handleUpdate (event) {

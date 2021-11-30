@@ -110,13 +110,13 @@ function ListCard(props) {
         viewHeight = '94%';
     }
 
-    let authorText = "By: " + idNamePair.ownerEmail;
+    let authorText = "By: " + idNamePair.ownerUsername;
     if(idNamePair.isCommunityList) {
         authorText = "";
     }
 
     let editButton = 
-        <Button sx={{fontSize: "8pt", left: '10px', top: '65px', position: 'absolute'}} variant = "text" 
+        <Button sx={{fontSize: "8pt", left: '10px', top: viewHeight, position: 'absolute'}} variant = "text" 
             onClick = {(event) => {handleLoadList(event, idNamePair._id)}}> 
             Edit 
         </Button>

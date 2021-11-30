@@ -26,7 +26,8 @@ export default function RegisterScreen() {
             lastName: formData.get('lastName'),
             email: formData.get('email'),
             password: formData.get('password'),
-            passwordVerify: formData.get('passwordVerify')
+            passwordVerify: formData.get('passwordVerify'),
+            username: formData.get('username')
         }, store);
     };
 
@@ -36,7 +37,7 @@ export default function RegisterScreen() {
                 <Modal/>
                 <Box
                     sx={{
-                        marginTop: 8,
+                        marginTop: 3,
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
@@ -69,6 +70,16 @@ export default function RegisterScreen() {
                                     label="Last Name"
                                     name="lastName"
                                     autoComplete="lname"
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    id="username"
+                                    label="User Name"
+                                    name="username"
+                                    autoComplete="username"
                                 />
                             </Grid>
                             <Grid item xs={12}>

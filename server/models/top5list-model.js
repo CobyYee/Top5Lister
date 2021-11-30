@@ -4,6 +4,7 @@ const Schema = mongoose.Schema
 const Top5ListSchema = new Schema(
     {
         ownerEmail: {type: String, required: false},
+        ownerUsername: {type: String, required: false},
         name: { type: String, required: true },
         items: { type: [String], required: true },
         views: { type: Number, required: true},

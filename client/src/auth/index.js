@@ -40,8 +40,8 @@ function AuthContextProvider(props) {
             }
             case AuthActionType.REGISTER_USER: {
                 return setAuth({
-                    user: payload.user,
-                    loggedIn: true,
+                    user: null,
+                    loggedIn: false,
                     err: null
                 })
             }
@@ -137,13 +137,14 @@ function AuthContextProvider(props) {
                 authReducer({
                     type: AuthActionType.REGISTER_USER,
                     payload: {
-                        user: response.data.user
+                        user: null
                     }
                 })
                 history.push("/");
                 //store.loadIdNamePairs();
             }
         } catch (err) {
+            console.log(err);
             authReducer({
                 type: AuthActionType.SHOW_ERROR,
                 payload: {
