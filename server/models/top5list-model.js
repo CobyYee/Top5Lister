@@ -3,7 +3,7 @@ const Schema = mongoose.Schema
 
 const Top5ListSchema = new Schema(
     {
-        ownerEmail: {type: String, required: true},
+        ownerEmail: {type: String, required: false},
         name: { type: String, required: true },
         items: { type: [String], required: true },
         views: { type: Number, required: true},
@@ -12,7 +12,9 @@ const Top5ListSchema = new Schema(
         datePublished: {type: Date, required: false},
         comments: {type: [Object], required: true},
         emailLikes: {type: [String], required: false},
-        emailDislikes: {type: [String], required: false}
+        emailDislikes: {type: [String], required: false},
+        isCommunityList: {type: Boolean, required: true},
+        communityItems: {type: [Object], required: false}
     },
     { timestamps: true },
 )

@@ -35,8 +35,7 @@ function WorkspaceScreen() {
     }
 
     function saveList() {
-        store.changeListName(store.currentList._id, listName);
-        store.closeCurrentList();
+        store.saveList(listName);
     }
 
     function publishList() {

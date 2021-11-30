@@ -77,7 +77,7 @@ function Statusbar(props) {
             }
             else {
                 statusBarContents = <div> {searchText} </div>;
-                store.loadUserIdNamePairs(searchText);
+                store.loadPublishedUserIdNamePairs(searchText);
             }
         }
     }
