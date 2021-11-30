@@ -39,8 +39,7 @@ function WorkspaceScreen() {
     }
 
     function publishList() {
-        store.changeListName(store.currentList._id, listName);
-        store.setListPublished();
+        store.setListPublished(listName);
         store.closeCurrentList();
     }
 
@@ -58,7 +57,7 @@ function WorkspaceScreen() {
     else if(hasRepetitions(store.currentList.items)) {
         publishDisabled = true;
     } 
-    else if(!store.isNameAvailable()) {
+    else if(!store.isNameAvailable(listName)) {
         publishDisabled = true;
     }
     

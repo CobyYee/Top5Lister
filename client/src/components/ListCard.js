@@ -26,7 +26,7 @@ function ListCard(props) {
     const { store } = useContext(GlobalStoreContext);
     const { auth } = useContext(AuthContext);
     const [isExpanded, setExpanded] = useState(false);
-    const { key, idNamePair } = props;
+    const { key, idNamePair, tab } = props;
     const [ comment, setComment ] = useState("");
 
     function handleLoadList(event, id) {
@@ -78,7 +78,7 @@ function ListCard(props) {
     }
 
     let trashIcon = "";
-    if(auth.user !== null && auth.user.email === idNamePair.ownerEmail) {
+    if(auth.user !== null && auth.user.email === idNamePair.ownerEmail && tab === "HOME") {
         trashIcon =
             <IconButton onClick={(event) => {
                 handleDeleteList(event, idNamePair._id)}} aria-label='delete'>

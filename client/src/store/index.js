@@ -240,9 +240,11 @@ function GlobalStoreContextProvider(props) {
     }
 
     // PUBLISHES A LIST
-    store.setListPublished = async function (){
+    store.setListPublished = async function (name) {
         try {
-            let response = await api.getTop5ListById(store.currentList._id);
+            store.currentList.name = name;
+            let response = await api.updateTop5ListById(store.currentList._id, store.currentList);
+            response = await api.getTop5ListById(store.currentList._id);
             if(response.data.success) {
                 let top5List = response.data.top5List;
                 top5List.datePublished = new Date();
@@ -297,7 +299,8 @@ function GlobalStoreContextProvider(props) {
                 communityList.items[3] = communityList.communityItems[3].item;
                 communityList.items[4] = communityList.communityItems[4].item;
                 response = await api.updateTop5ListById(communityList._id, communityList);
-                await store.loadAllPublishedLists();
+                store.closeCurrentList();
+                await store.loadUserIdNamePairs(auth.user.email);
             }
         } catch (err) {
             console.log(err);
@@ -658,6 +661,8 @@ function GlobalStoreContextProvider(props) {
 
     // THIS FUNCTION CHECKS IF THE USER HAS A LIST WITH A SPECIFIED NAME 
     store.isNameAvailable = async function (name) {
+        /*
+        let result = true;
         try {
             let response = await api.getTop5ListPairs();
             if (response.data.success) {
@@ -667,18 +672,24 @@ function GlobalStoreContextProvider(props) {
                     if(response2.data.top5List.name === name) {
                         if(response2.data.top5List.ownerEmail === auth.user.email) {
                             if(response2.data.top5List.datePublished !== null) {
-                                return false;
+                                result = false;
                             }
                         }
                     }
                 }
-
-                return true;
+                console.log("returning: " + result);
+                return result;
             }
         }
         catch (err) {
             console.log(err);
+        }*/
+        for (let i = 0; i < store.lists.length; i++) {
+            if(store.lists[i].name === name && store.lists[i].datePublished !== null) {
+                return false;
+            }
         }
+        return true;
     }
 
     // THIS FUNCTION SEARCHES THROUGH LISTS FOR LISTS THAT START WITH THE SPECIFIED STRING
