@@ -67,6 +67,9 @@ function ListCard(props) {
     const handleOpenLists = (event) => {
         event.stopPropagation();
         userCallback();
+        if(isExpanded) {
+            setExpanded(!isExpanded);
+        }
         store.loadUserIdNamePairs(idNamePair.ownerEmail);
     }
 
@@ -75,11 +78,21 @@ function ListCard(props) {
         store.markListForDeletion(id);
     }
 
+    let commentDisabled = false;
+    let likeDisabled = false;
+    if(auth.user === null) {
+        commentDisabled = true;
+        likeDisabled = true;
+    }
+
     let comments = "";
     if(isExpanded) {
         comments = idNamePair.comments.map((pair) => (
             <div id = "comment">
-                {pair.poster} <br/> {pair.comment}
+                <Typography sx = {{textDecoration: 'underline', color: 'blue', cursor: 'pointer', fontSize: '10pt'}} onClick = {handleOpenLists}>
+                    {pair.poster}
+                </Typography>
+                <Typography sx = {{fontSize: '12pt'}}> {pair.comment} </Typography>
             </div>
         ));
     }
@@ -91,6 +104,7 @@ function ListCard(props) {
                 <TextField placeholder = "Add a comment" 
                     sx = {{left: '1%', position: 'absolute', top: '79%', width: '96%', color: 'white'}}
                     onChange = {handleCommentChange} onKeyPress = {handleKeyPress} value = {comment}
+                    disabled = {commentDisabled}
                 />
                 <div id = "comment-list">
                     {comments}
@@ -118,15 +132,11 @@ function ListCard(props) {
 
     let likeButtons = 
         <span>
-            <IconButton onClick={(event) => {
-                handleLikeList()
-            }}>
+            <IconButton onClick={(event) => {handleLikeList()}} disabled = {likeDisabled}>
                 <LikeIcon style={{fontSize:'18pt', color: likeColor}} />
             </IconButton>
             <span> {idNamePair.likes} </span>
-            <IconButton onClick={(event) => {
-                handleDislikeList()
-            }}>
+            <IconButton onClick={(event) => {handleDislikeList()}} disabled = {likeDisabled}>
                 <DislikeIcon style={{fontSize:'18pt', color: dislikeColor}}/>
             </IconButton>
             <span> {idNamePair.dislikes} </span>
@@ -155,7 +165,7 @@ function ListCard(props) {
             <span>
                 By: 
             </span>
-            <Typography sx = {{textDecoration: 'underline', color: 'blue'}} onClick = {handleOpenLists}>
+            <Typography sx = {{textDecoration: 'underline', color: 'blue', cursor: 'pointer'}} display = "inline" onClick = {handleOpenLists}>
                 {idNamePair.ownerUsername}
             </Typography>
         </Box>
