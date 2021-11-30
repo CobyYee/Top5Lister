@@ -50,6 +50,7 @@ const HomeScreen = () => {
                         key={pair._id}
                         idNamePair={pair}
                         tab = {listTab}
+                        userCallback = {userCallback}
                     />
                 ))
             }

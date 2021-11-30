@@ -14,6 +14,7 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import AuthContext from '../auth';
+import Typography from '@mui/material/Typography'
 
 /*
     This is a card in our list of top 5 lists. It lets select
@@ -26,7 +27,7 @@ function ListCard(props) {
     const { store } = useContext(GlobalStoreContext);
     const { auth } = useContext(AuthContext);
     const [isExpanded, setExpanded] = useState(false);
-    const { key, idNamePair, tab } = props;
+    const { key, idNamePair, tab, userCallback } = props;
     const [ comment, setComment ] = useState("");
 
     function handleLoadList(event, id) {
@@ -61,6 +62,12 @@ function ListCard(props) {
 
     function handleDislikeList() {
         store.dislikeList(idNamePair);
+    }
+
+    const handleOpenLists = (event) => {
+        event.stopPropagation();
+        userCallback();
+        store.loadUserIdNamePairs(idNamePair.ownerEmail);
     }
 
     async function handleDeleteList(event, id) {
@@ -143,7 +150,16 @@ function ListCard(props) {
         viewHeight = '94%';
     }
 
-    let authorText = "By: " + idNamePair.ownerUsername;
+    let authorText = 
+        <Box>
+            <span>
+                By: 
+            </span>
+            <Typography sx = {{textDecoration: 'underline', color: 'blue'}} onClick = {handleOpenLists}>
+                {idNamePair.ownerUsername}
+            </Typography>
+        </Box>
+    
     if(idNamePair.isCommunityList) {
         authorText = "";
     }
