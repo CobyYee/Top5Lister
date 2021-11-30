@@ -110,6 +110,11 @@ function ListCard(props) {
         viewHeight = '94%';
     }
 
+    let authorText = "By: " + idNamePair.ownerEmail;
+    if(idNamePair.isCommunityList) {
+        authorText = "";
+    }
+
     let editButton = 
         <Button sx={{fontSize: "8pt", left: '10px', top: '65px', position: 'absolute'}} variant = "text" 
             onClick = {(event) => {handleLoadList(event, idNamePair._id)}}> 
@@ -196,7 +201,7 @@ function ListCard(props) {
         <ListItem sx = {{height: cardHeight, bgcolor: bgColor, borderRadius: '16px', border: '2px solid', mt: 1}}>
             <div>
                 <Box sx={{fontSize: "20pt", left: '10px', top: '10px', position: 'absolute'}}>{idNamePair.name}</Box>
-                <Box sx={{fontSize: "12pt", left: '10px', top: '40px', position: 'absolute'}}>By: {idNamePair.ownerEmail}</Box>
+                <Box sx={{fontSize: "12pt", left: '10px', top: '40px', position: 'absolute'}}> {authorText} </Box>
                 {listContainer}
                 {editButton}
                 <Box sx={{ p: 1 }} id = "list-buttons">

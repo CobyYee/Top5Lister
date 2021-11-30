@@ -1,5 +1,5 @@
 import { Global } from '@emotion/react';
-import { listSubheaderClasses } from '@mui/material';
+import { listSubheaderClasses, stepperClasses } from '@mui/material';
 import { createContext, useContext, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import api from '../api'
@@ -263,7 +263,7 @@ function GlobalStoreContextProvider(props) {
                         name: newListName,
                         items: ["?", "?", "?", "?", "?"],
                         ownerEmail: null,
-                        datePublished: null,
+                        datePublished: top5List.datePublished,
                         views: 0,
                         likes: 0,
                         dislikes: 0,
@@ -281,6 +281,7 @@ function GlobalStoreContextProvider(props) {
                 }
                 else {
                     let communityListItems = communityList.communityItems;
+                    communityList.datePublished = top5List.datePublished;
                     for(let i = 0; i < 5; i++) {
                         let index = communityListItems.map(function(item) { return item.item; }).indexOf(top5List.items[i]);
                         if(index === -1) {
@@ -568,6 +569,28 @@ function GlobalStoreContextProvider(props) {
         }
         else {
             console.log("API FAILED TO GET THE LIST PAIRS");
+        }
+    }
+
+    store.loadCommunityLists = async function () {
+        let response = await api.getTop5ListPairs();
+        if(response.data.success) {
+            let pairsArray = response.data.idNamePairs;
+            let filteredArray = [];
+            for(let i = 0; i < pairsArray.length; i++) {
+                let response2 = await api.getTop5ListById(pairsArray[i]._id);
+                if(response2.data.top5List.isCommunityList){
+                    filteredArray.push(response2.data.top5List);
+                }
+            }
+            storeReducer({
+                type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
+                payload: filteredArray
+            })
+            for(let i = 0; i < filteredArray.length; i++) {
+                console.log(filteredArray[i]);
+            }
+            store.updateListsState(filteredArray);
         }
     }
 

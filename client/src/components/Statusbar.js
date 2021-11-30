@@ -116,8 +116,8 @@ function Statusbar(props) {
 
     function handleCommunity() {
         setSearch("");
-        //console.log("COMMUNITY");
         communityCallback();
+        store.loadCommunityLists();
     }
 
     function sortList(type) {
