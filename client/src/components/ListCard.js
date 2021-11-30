@@ -77,10 +77,24 @@ function ListCard(props) {
         ));
     }
 
+    let commentSection = "";
+    if(isExpanded && idNamePair.datePublished !== null) {
+        commentSection =
+            <Container>
+                <TextField placeholder = "Add a comment" 
+                    sx = {{left: '1%', position: 'absolute', top: '79%', width: '96%', color: 'white'}}
+                    onChange = {handleCommentChange} onKeyPress = {handleKeyPress} value = {comment}
+                />
+                <div id = "comment-list">
+                    {comments}
+                </div>
+            </Container>
+    }
+
     let trashIcon = "";
     if(auth.user !== null && auth.user.email === idNamePair.ownerEmail && tab === "HOME") {
         trashIcon =
-            <IconButton onClick={(event) => {
+            <IconButton sx = {{left: '64%', position: 'absolute'}} onClick={(event) => {
                 handleDeleteList(event, idNamePair._id)}} aria-label='delete'>
                 <DeleteIcon style={{fontSize:'18pt'}} />
             </IconButton>
@@ -93,6 +107,25 @@ function ListCard(props) {
     }
     if(store.isListDisliked(idNamePair)) {
         dislikeColor = "blue";
+    }
+
+    let likeButtons = 
+        <span>
+            <IconButton onClick={(event) => {
+                handleLikeList()
+            }}>
+                <LikeIcon style={{fontSize:'18pt', color: likeColor}} />
+            </IconButton>
+            <span> {idNamePair.likes} </span>
+            <IconButton onClick={(event) => {
+                handleDislikeList()
+            }}>
+                <DislikeIcon style={{fontSize:'18pt', color: dislikeColor}}/>
+            </IconButton>
+            <span> {idNamePair.dislikes} </span>
+        </span>
+    if(idNamePair.datePublished === null) {
+        likeButtons ="";
     }
 
     let publishView = "";
@@ -121,15 +154,38 @@ function ListCard(props) {
             Edit 
         </Button>
     if(idNamePair.datePublished) {
+        let status = "Published: ";
+        if(idNamePair.isCommunityList){
+            status = "Updated: ";
+        }
         editButton = 
             <Box sx = {{fontSize: '12pt', position: 'absolute', left: '1%', top: viewHeight}}>
-                Published: {(dateObj.getMonth()+1) + "/" + dateObj.getDate() + "/" + dateObj.getFullYear()}
+                {status} {(dateObj.getMonth()+1) + "/" + dateObj.getDate() + "/" + dateObj.getFullYear()}
             </Box>
     }
 
     let expandIcon = <ExpandMoreIcon sx = {{fontSize: "18pt"}}/>
     let cardHeight = "80pt";
     let listContainer = "";
+
+    let item1 = <div> {idNamePair.items[0]} </div>
+    let item2 = <div> {idNamePair.items[1]} </div>
+    let item3 = <div> {idNamePair.items[2]} </div>
+    let item4 = <div> {idNamePair.items[3]} </div>
+    let item5 = <div> {idNamePair.items[4]} </div>
+    if(idNamePair.isCommunityList) {
+        item1 = <Box> <div id = "community-item"> {idNamePair.communityItems[0].item} </div> 
+            <div id = "community-votes"> ({idNamePair.communityItems[0].points} Votes) </div> </Box>
+        item2 = <Box> <div id = "community-item"> {idNamePair.communityItems[1].item} </div> 
+            <div id = "community-votes"> ({idNamePair.communityItems[1].points} Votes) </div> </Box>
+        item3 = <Box> <div id = "community-item"> {idNamePair.communityItems[2].item} </div> 
+            <div id = "community-votes"> ({idNamePair.communityItems[2].points} Votes) </div> </Box>
+        item4 = <Box> <div id = "community-item"> {idNamePair.communityItems[3].item} </div> 
+            <div id = "community-votes"> ({idNamePair.communityItems[3].points} Votes) </div> </Box>
+        item5 = <Box> <div id = "community-item" >{idNamePair.communityItems[4].item} </div> 
+            <div id = "community-votes"> ({idNamePair.communityItems[4].points} Votes) </div> </Box>
+    }
+
     if(isExpanded) {
         expandIcon = <ExpandLessIcon sx = {{fontSize: "18pt"}}/>
         cardHeight = "300pt";
@@ -143,7 +199,7 @@ function ListCard(props) {
                             </Grid>
                             <Grid item xs = {10} sx = {{fontSize: "24pt", width: '84%', position: 'absolute',
                                 left: '10%', borderRadius: '10pt', color: 'yellow'}}> 
-                                <div>  { idNamePair.items[0] } </div>
+                                <div>  { item1 } </div>
                             </Grid>
                         </Grid>
                         <Grid container item spacing={2}>
@@ -152,7 +208,7 @@ function ListCard(props) {
                             </Grid>
                             <Grid item xs = {10} sx = {{fontSize: "24pt", width: '84%', position: 'absolute',
                                 left: '10%', borderRadius: '10pt', color: 'yellow'}}> 
-                                <div> { idNamePair.items[1] } </div>
+                                <div> { item2 } </div>
                             </Grid>
                         </Grid>
                         <Grid container item spacing={2} >
@@ -161,7 +217,7 @@ function ListCard(props) {
                             </Grid>
                             <Grid item xs = {10} sx = {{fontSize: "24pt", width: '84%', position: 'absolute',
                                 left: '10%', borderRadius: '10pt', color: 'yellow'}}> 
-                                <div> { idNamePair.items[2] } </div>
+                                <div> { item3 } </div>
                             </Grid>
                         </Grid>
                         <Grid container item spacing={2} >
@@ -170,7 +226,7 @@ function ListCard(props) {
                             </Grid>
                             <Grid item xs = {10} sx = {{fontSize: "24pt", width: '84%', position: 'absolute',
                                 left: '10%', borderRadius: '10pt', color: 'yellow'}}> 
-                                <div> { idNamePair.items[3] } </div>
+                                <div> { item4 } </div>
                             </Grid>
                         </Grid>
                         <Grid container item spacing={2}>
@@ -179,20 +235,14 @@ function ListCard(props) {
                             </Grid>
                             <Grid item xs = {10} sx = {{fontSize: "24pt", width: '84%', position: 'absolute',
                                 left: '10%', borderRadius: '10pt', color: 'yellow'}}> 
-                                <div> { idNamePair.items[4] } </div>
+                                <div> { item5 } </div>
                             </Grid>
                         </Grid>
                     </Grid>
                 </Container>
 
                 <Container id = "comment-section">
-                    <TextField placeholder = "Add a comment" 
-                        sx = {{left: '1%', position: 'absolute', top: '79%', width: '96%', color: 'white'}}
-                        onChange = {handleCommentChange} onKeyPress = {handleKeyPress} value = {comment}
-                    />
-                    <div id = "comment-list">
-                        {comments}
-                    </div>
+                    {commentSection}
                 </Container>
             </Container>
     }
@@ -205,18 +255,7 @@ function ListCard(props) {
                 {listContainer}
                 {editButton}
                 <Box sx={{ p: 1 }} id = "list-buttons">
-                    <IconButton onClick={(event) => {
-                        handleLikeList()
-                    }}>
-                        <LikeIcon style={{fontSize:'18pt', color: likeColor}} />
-                    </IconButton>
-                    <span> {idNamePair.likes} </span>
-                    <IconButton onClick={(event) => {
-                        handleDislikeList()
-                    }}>
-                        <DislikeIcon style={{fontSize:'18pt', color: dislikeColor}}/>
-                    </IconButton>
-                    <span> {idNamePair.dislikes} </span>
+                    {likeButtons}
                     {trashIcon}
                 </Box>
                 <Box id = "expand-icon">

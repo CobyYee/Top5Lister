@@ -207,6 +207,18 @@ body {
   background-color: #c49f28;
 }
 
+#community-item {
+  font-size: 16pt;
+  height: 60%;
+  width: 100%;
+}
+
+#community-votes {
+  font-size: 12pt;
+  height: 40%;
+  top: 60%;
+}
+
 #expand-icon {
   width: 4%;
   left: 95%;

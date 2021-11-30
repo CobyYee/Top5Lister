@@ -56,7 +56,7 @@ function WorkspaceScreen() {
     else if(hasRepetitions(store.currentList.items)) {
         publishDisabled = true;
     } 
-    else if(!store.isNameAvailable(listName)) {
+    else if(store.isNameAvailable(listName) === false) {
         publishDisabled = true;
     }
     

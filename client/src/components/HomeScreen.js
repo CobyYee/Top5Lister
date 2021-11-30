@@ -7,6 +7,7 @@ import List from '@mui/material/List';
 import Modal from './Modal';
 import Statusbar from './Statusbar';
 import { WorkspaceScreen } from '.';
+import AuthContext from '../auth';
 /*
     This React component lists all the top5 lists in the UI.
     
@@ -14,7 +15,17 @@ import { WorkspaceScreen } from '.';
 */
 const HomeScreen = () => {
     const { store } = useContext(GlobalStoreContext);
-    const [listTab, setListTab] = useState("HOME");
+    const { auth } = useContext(AuthContext);
+
+    let initialState = "";
+    if(auth.user === null) {
+        initialState = "ALL";
+    }
+    else {
+        initialState = "HOME"
+    }
+
+    const [listTab, setListTab] = useState(initialState);
 
     const homeCallback = () => {
         setListTab("HOME");

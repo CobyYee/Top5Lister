@@ -552,25 +552,26 @@ function GlobalStoreContextProvider(props) {
 
     // LOAD ALL THE LISTS THAT ARE PUBLISHED, BELONGING TO ANY USER
     store.loadAllPublishedLists = async function () {
-        const response = await api.getTop5ListPairs();
-        if (response.data.success) {
-            let pairsArray = response.data.idNamePairs;
-            let filteredArray = [];
-            for(let i = 0; i < pairsArray.length; i++) {
-                let response2 = await api.getTop5ListById(pairsArray[i]._id);
-                if(response2.data.top5List.datePublished !== null) {
-                    filteredArray.unshift(response2.data.top5List);
+        try{
+            const response = await api.getTop5ListPairs();
+            if (response.data.success) {
+                let pairsArray = response.data.idNamePairs;
+                let filteredArray = [];
+                for(let i = 0; i < pairsArray.length; i++) {
+                    let response2 = await api.getTop5ListById(pairsArray[i]._id);
+                    if(response2.data.top5List.datePublished !== null) {
+                        filteredArray.unshift(response2.data.top5List);
+                    }
                 }
+                storeReducer({
+                    type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
+                    payload: filteredArray
+                });
+                store.updateListsState(filteredArray);
+                //console.log(store.shownLists);
             }
-            storeReducer({
-                type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
-                payload: filteredArray
-            });
-            store.updateListsState(filteredArray);
-            //console.log(store.shownLists);
-        }
-        else {
-            console.log("API FAILED TO GET THE LIST PAIRS");
+        } catch (err) {
+            console.log(err);
         }
     }
 
@@ -685,7 +686,7 @@ function GlobalStoreContextProvider(props) {
     }
 
     // THIS FUNCTION CHECKS IF THE USER HAS A LIST WITH A SPECIFIED NAME 
-    store.isNameAvailable = async function (name) {
+    store.isNameAvailable = function (name) {
         /*
         let result = true;
         try {
@@ -709,12 +710,14 @@ function GlobalStoreContextProvider(props) {
         catch (err) {
             console.log(err);
         }*/
+        let result = true;
         for (let i = 0; i < store.lists.length; i++) {
             if(store.lists[i].name === name && store.lists[i].datePublished !== null) {
-                return false;
+                result = false;
+                break;
             }
         }
-        return true;
+        return result;
     }
 
     // THIS FUNCTION SEARCHES THROUGH LISTS FOR LISTS THAT START WITH THE SPECIFIED STRING
