@@ -345,16 +345,9 @@ function GlobalStoreContextProvider(props) {
     // HANDLES A PERSON EXPANDING A LIST, THUS INCREASING THE NUMBER OF VIEWS
     store.incrementViews = async function (list){
         try {
-            let response = await api.getTop5ListById(list._id);
-            if(response.data.success) {
-                let top5List = response.data.top5List;
-                top5List.views = top5List.views+1;
-                
-                async function updateList(top5List){  
-                    response = await api.updateTop5ListById(top5List._id, top5List);
-                }
-                updateList(top5List);
-            }
+            let top5List = list;
+            top5List.views = top5List.views+1;
+            let response = await api.updateTop5ListById(top5List._id, top5List);
         } catch (err) {
             console.log(err);
         }
@@ -585,6 +578,15 @@ function GlobalStoreContextProvider(props) {
             }
         } catch (err) {
             console.log(err);
+        }
+    }
+
+    store.loadInitialPage = async function() {
+        if(auth.user === null) {
+            await store.loadAllPublishedLists();
+        }
+        else{
+            await store.loadUserIdNamePairs(auth.user.email);
         }
     }
 

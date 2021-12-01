@@ -49,7 +49,7 @@ function ListCard(props) {
     }
 
     function handleToggleExpand(event, id) {
-        if(store.currentTab !== "HOME" && !isExpanded) {
+        if(tab !== "HOME" && !isExpanded) {
             console.log(store.currentTab);
             store.incrementViews(idNamePair);
         }

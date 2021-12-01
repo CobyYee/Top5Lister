@@ -22,8 +22,12 @@ const HomeScreen = () => {
         initialState = "ALL";
     }
     else {
-        initialState = "HOME"
+        initialState = "HOME";
     }
+
+    useEffect(()=>{
+        store.loadInitialPage();
+    },[]);
 
     const [listTab, setListTab] = useState(initialState);
 
