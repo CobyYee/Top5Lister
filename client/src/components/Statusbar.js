@@ -30,6 +30,7 @@ function Statusbar(props) {
     const { auth } = useContext(AuthContext);
     const [anchorEl, setAnchorEl] = useState(null);
     const [searchText, setSearch] = useState("");
+    const [statusBarContents, setStatusBar] = useState("");
     const isMenuOpen = Boolean(anchorEl);
     let text = "";
 
@@ -56,28 +57,47 @@ function Statusbar(props) {
         store.createNewList();
     }
 
-    let statusBarContents = 
-        <Box>
-            <Fab 
-                color="primary" 
-                aria-label="add"
-                id="add-list-button"
-                onClick={handleCreateNewList}
-                disabled = {statusBarDisabled}
-            >
-                <AddIcon />
-            </Fab>
-            Your Lists
-        </Box>
+    let statusbar = "";
+    if(statusBarContents === ""){
+        if(tab === "HOME") {
+            statusbar = 
+                <Box>
+                    <Fab 
+                        color="primary" 
+                        aria-label="add"
+                        id="add-list-button"
+                        onClick={handleCreateNewList}
+                        disabled = {statusBarDisabled}
+                    >
+                        <AddIcon />
+                    </Fab>
+                    Your Lists
+                </Box>
+        }
+        else if(tab === "USER") {
+            statusbar = <div> User Lists</div>
+        }
+        else if(tab === "ALL") {
+            statusbar = <div> All Lists </div>
+        }
+        else if(tab === "COMMUNITY") {
+            statusbar = <div> Community Lists </div>
+        }
+    }
+    else {
+        statusbar = <div> {statusBarContents} Lists</div>
+    }
 
     const handleKeyPress = (event) => {
         if(event.code === "Enter") {
             if(tab !== "USER") {
                 store.searchLists(searchText);
+                setStatusBar(searchText);
             }
             else {
-                statusBarContents = <div> {searchText} </div>;
+                //statusBarContents = <div> {searchText} </div>;
                 store.loadPublishedUserIdNamePairs(searchText);
+                setStatusBar(searchText);
             }
         }
     }
@@ -98,24 +118,28 @@ function Statusbar(props) {
 
     const handleHome = (event) => {
         setSearch("");
+        setStatusBar("");
         homeCallback();
         store.loadUserIdNamePairs(auth.user.email);
     }
 
     const handleGroups = () => {
         setSearch("");
+        setStatusBar("");
         groupsCallback();
         store.loadAllPublishedLists();
     }
 
     function handlePerson() {
-        setSearch("");
-        userCallback();
         store.clearShownLists();
+        setSearch("");
+        setStatusBar("");
+        userCallback();
     }
 
     function handleCommunity() {
         setSearch("");
+        setStatusBar("");
         communityCallback();
         store.loadCommunityLists();
     }
@@ -159,15 +183,15 @@ function Statusbar(props) {
     }
     else if(tab === "ALL" && store.currentList === null) {
         secondColor = "blue";
-        statusBarContents = <div> All Lists </div>
+        //statusBarContents = <div> All Lists </div>
     }
     else if(tab === "USER" && store.currentList === null) {
         thirdColor = "blue";
-        statusBarContents = <div> User Lists </div>
+        //statusBarContents = <div> User Lists </div>
     }
     else if(tab === "COMMUNITY" && store.currentList === null) {
         fourthColor = "blue";
-        statusBarContents = <div> Community Lists </div>
+        //statusBarContents = <div> Community Lists </div>
     }
     if(location.pathname === "/lists/") {
         component = <div id="top5-list-interface">
@@ -202,7 +226,7 @@ function Statusbar(props) {
                             </Grid>
                         </Grid>
                         <Box sx = {{display: 'flex', height: '10%', width: '100%', justifyContent: 'center', top: '90%', position: 'absolute'}}>
-                            {statusBarContents}
+                            {statusbar}
                         </Box>
 
                         <Menu

@@ -33,7 +33,7 @@ const HomeScreen = () => {
     const groupsCallback = () => {
         setListTab("ALL");
     }
-    const userCallback = () => {
+    const userCallback = (username) => {
         setListTab("USER");
     }
     const communityCallback = () => {

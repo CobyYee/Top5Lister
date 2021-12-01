@@ -66,11 +66,11 @@ function ListCard(props) {
 
     const handleOpenLists = (event) => {
         event.stopPropagation();
-        userCallback();
+        userCallback(idNamePair.ownerUsername);
         if(isExpanded) {
             setExpanded(!isExpanded);
         }
-        store.loadUserIdNamePairs(idNamePair.ownerEmail);
+        store.loadPublishedUserIdNamePairs(idNamePair.ownerUsername);
     }
 
     async function handleDeleteList(event, id) {

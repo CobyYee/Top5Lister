@@ -27,7 +27,8 @@ export const GlobalStoreActionType = {
     SET_ITEM_EDIT_ACTIVE: "SET_ITEM_EDIT_ACTIVE",
     LOAD_LISTS_ARRAY: "LOAD_LISTS_ARRAY",
     RELOAD_STATE: "RELOAD_STATE",
-    SET_LIST_VIEW: "SET_LIST_VIEW"
+    SET_LIST_VIEW: "SET_LIST_VIEW",
+    CLEAR_LISTS: "CLEAR_LISTS"
 }
 
 // WITH THIS WE'RE MAKING OUR GLOBAL DATA STORE
@@ -194,6 +195,18 @@ function GlobalStoreContextProvider(props) {
                     lists: store.lists,
                     shownLists: payload
                 });
+            }
+            case GlobalStoreActionType.CLEAR_LISTS: {
+                return setStore({
+                    idNamePairs: store.idNamePairs,
+                    currentList: null,
+                    newListCounter: store.newListCounter,
+                    isListNameEditActive: false,
+                    isItemEditActive: false,
+                    listMarkedForDeletion: null,
+                    lists: null,
+                    shownLists: null
+                })
             }
             default:
                 return store;
@@ -522,22 +535,22 @@ function GlobalStoreContextProvider(props) {
         }
     }
 
-    store.filterPublishedUserPairs = async function(arr, ownerEmail) {
+    store.filterPublishedUserPairs = async function(arr, username) {
         let arr2 = [];
         for(let i = 0; i < arr.length; i++) {
             const response = await api.getTop5ListById(arr[i]._id);
-            if(response.data.top5List.ownerEmail === ownerEmail && response.data.top5List.datePublished !== null) {
+            if(response.data.top5List.ownerUsername === username && response.data.top5List.datePublished !== null) {
                 arr2.unshift(response.data.top5List);
             }
         }
         return arr2;
     }
 
-    store.loadPublishedUserIdNamePairs = async function (ownerEmail) {
+    store.loadPublishedUserIdNamePairs = async function (username) {
         const response = await api.getTop5ListPairs();
         if (response.data.success) {
             let pairsArray = response.data.idNamePairs;
-            pairsArray = await store.filterPublishedUserPairs(pairsArray, ownerEmail);
+            pairsArray = await store.filterPublishedUserPairs(pairsArray, username);
             storeReducer({
                 type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
                 payload: pairsArray
@@ -559,7 +572,7 @@ function GlobalStoreContextProvider(props) {
                 let filteredArray = [];
                 for(let i = 0; i < pairsArray.length; i++) {
                     let response2 = await api.getTop5ListById(pairsArray[i]._id);
-                    if(response2.data.top5List.datePublished !== null) {
+                    if(response2.data.top5List.datePublished !== null && !response2.data.top5List.isCommunityList) {
                         filteredArray.unshift(response2.data.top5List);
                     }
                 }
@@ -712,7 +725,7 @@ function GlobalStoreContextProvider(props) {
         }*/
         let result = true;
         for (let i = 0; i < store.lists.length; i++) {
-            if(store.lists[i].name === name && store.lists[i].datePublished !== null) {
+            if(store.lists[i].name.toLowerCase() === name.toLowerCase() && store.lists[i].datePublished !== null) {
                 result = false;
                 break;
             }
