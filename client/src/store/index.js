@@ -755,24 +755,25 @@ function GlobalStoreContextProvider(props) {
     store.deleteList = async function (listToDelete) {
         if(auth.user !== null && auth.user.email === listToDelete.ownerEmail) {
             let communityList = await store.findCommunityList(listToDelete.name);
-            let communityListItems = communityList.communityItems;
-            for(let i = 0; i < 5; i++) {
-                let index = communityListItems.map(function(item) { return item.item; }).indexOf(listToDelete.items[i]);
-                communityListItems[index].points -= (5-i);
-            }
-            communityList.communityItems = communityListItems.filter(item => item.points !== 0);
-            console.log(communityList);
-            if(communityList.communityItems.length === 0) {
-                let response3 = await api.deleteTop5ListById(communityList._id);
-            }
-            else {
-                communityList.communityItems.sort(function(a, b) { return b.points - a.points })
-                communityList.items[0] = communityList.communityItems[0].item;
-                communityList.items[1] = communityList.communityItems[1].item;
-                communityList.items[2] = communityList.communityItems[2].item;
-                communityList.items[3] = communityList.communityItems[3].item;
-                communityList.items[4] = communityList.communityItems[4].item;
-                let response = await api.updateTop5ListById(communityList._id, communityList);
+            if(communityList !== null) {
+                let communityListItems = communityList.communityItems;
+                for(let i = 0; i < 5; i++) {
+                    let index = communityListItems.map(function(item) { return item.item; }).indexOf(listToDelete.items[i]);
+                    communityListItems[index].points -= (5-i);
+                }
+                communityList.communityItems = communityListItems.filter(item => item.points !== 0);
+                if(communityList.communityItems.length === 0) {
+                    let response3 = await api.deleteTop5ListById(communityList._id);
+                }
+                else {
+                    communityList.communityItems.sort(function(a, b) { return b.points - a.points })
+                    communityList.items[0] = communityList.communityItems[0].item;
+                    communityList.items[1] = communityList.communityItems[1].item;
+                    communityList.items[2] = communityList.communityItems[2].item;
+                    communityList.items[3] = communityList.communityItems[3].item;
+                    communityList.items[4] = communityList.communityItems[4].item;
+                    let response = await api.updateTop5ListById(communityList._id, communityList);
+                }
             }
 
             let response2 = await api.deleteTop5ListById(listToDelete._id);

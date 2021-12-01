@@ -111,7 +111,7 @@ export default function AppBanner() {
                         variant = "h4"
                         nowrap
                         component="div"
-                        sx={{display: {xs: 'none', sm: 'block'} }}
+                        sx={{display: {xs: 'none', sm: 'block'}, border: '2pt solid', borderRadius: '30pt', fontSize: '12pt', p: 1, cursor: 'pointer' }}
                         onClick={handleProfileMenuOpen}
                     >
                         {initials}
@@ -132,7 +132,7 @@ export default function AppBanner() {
                                     component="div"
                                     sx={{ display: { xs: 'none', sm: 'block' } }}                        
                                 >
-                                    <Link style={{ textDecoration: 'none', color: 'white' }} to='/'>T<sup>5</sup>L</Link>
+                                    <Typography style={{ textDecoration: 'none', color: 'white', fontSize: '24pt' }}>T<sup>5</sup>L</Typography>
                                 </Typography>
                                 <Box sx={{ flexGrow: 1 }}>{editToolbar}</Box>
                                 <Box sx={{ display: { xs: 'none', md: 'flex' } }}>

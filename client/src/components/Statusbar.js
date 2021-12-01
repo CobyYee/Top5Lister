@@ -52,6 +52,9 @@ function Statusbar(props) {
     let thirdColor = "grey";
     let fourthColor = "grey";
     let statusBarDisabled = false;
+    if(store.currentList !== null){
+        statusBarDisabled = true;
+    }
 
     const handleCreateNewList = () => {
         store.createNewList();
@@ -175,9 +178,6 @@ function Statusbar(props) {
         store.sortLists("dislikes");
     }
 
-    if(store.currentList !== null){
-        statusBarDisabled = true;
-    }
     if(tab === "HOME" && store.currentList === null) {
         firstColor = "blue";
     }
@@ -222,7 +222,9 @@ function Statusbar(props) {
                                     position: "absolute",
                                     left: "85%",
                                     fontSize: "20pt"
-                                }}> Sort By <SortIcon fontSize = "Small" onClick = {handleProfileMenuOpen}/> </Typography>
+                                }}> 
+                                    Sort By <SortIcon fontSize = "Small" onClick = {handleProfileMenuOpen} disabled = {statusBarDisabled}/> 
+                                </Typography>
                             </Grid>
                         </Grid>
                         <Box sx = {{display: 'flex', height: '10%', width: '100%', justifyContent: 'center', top: '90%', position: 'absolute'}}>

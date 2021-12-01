@@ -39,6 +39,14 @@ function Top5Item(props) {
         }
     }
 
+    function handleBlur(event) {
+        if(text !== "") {
+            let id = event.target.id.substring("item-".length);
+            store.updateItem(id, event.target.value);
+            toggleEdit();
+        }
+    }
+
     function handleClick(event) {
         if(event.detail === 2) {
             handleToggleEdit(event);
@@ -64,6 +72,7 @@ function Top5Item(props) {
             name="name"
             className='top5-item'
             onKeyPress={handleKeyPress}
+            onBlur={handleBlur}
             onChange={handleUpdateText}
             defaultValue={props.text}
             inputProps={{style: {fontSize: "24pt", color: "black", background: "#DEF581", height: "22px", left: "2%"}}}
