@@ -743,7 +743,7 @@ function GlobalStoreContextProvider(props) {
         }
         else {
             for(let i = 0; i < store.lists.length; i++){
-                if(store.lists[i].name.startsWith(str)){
+                if(store.lists[i].name === str){
                     arr.push(store.lists[i]);
                 }
             }

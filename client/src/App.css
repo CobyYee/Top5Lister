@@ -78,6 +78,11 @@ body {
   font-size: 24pt;
   text-align: center;
 }
+#credits {
+  color: black;
+  font-size: 14pt;
+  text-align: center;
+}
 #edit-toolbar {
   background-color: transparent;
   float: right;
@@ -214,7 +219,7 @@ body {
 }
 
 #community-votes {
-  font-size: 12pt;
+  font-size: 10pt;
   height: 40%;
   top: 60%;
 }

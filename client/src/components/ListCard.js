@@ -89,7 +89,7 @@ function ListCard(props) {
     if(isExpanded) {
         comments = idNamePair.comments.map((pair) => (
             <div id = "comment">
-                <Typography sx = {{textDecoration: 'underline', color: 'blue', cursor: 'pointer', fontSize: '10pt'}} onClick = {handleOpenLists}>
+                <Typography sx = {{textDecoration: 'underline', fontSize: '10pt'}}>
                     {pair.poster}
                 </Typography>
                 <Typography sx = {{fontSize: '12pt'}}> {pair.comment} </Typography>
@@ -225,7 +225,7 @@ function ListCard(props) {
                             </Grid>
                             <Grid item xs = {10} sx = {{fontSize: "24pt", width: '84%', position: 'absolute',
                                 left: '10%', borderRadius: '10pt', color: 'yellow'}}> 
-                                <div>  { item1 } </div>
+                                <Typography sx = {{fontSize: '16pt', width: '220%'}}> { item1 } </Typography>
                             </Grid>
                         </Grid>
                         <Grid container item spacing={2}>
@@ -234,7 +234,7 @@ function ListCard(props) {
                             </Grid>
                             <Grid item xs = {10} sx = {{fontSize: "24pt", width: '84%', position: 'absolute',
                                 left: '10%', borderRadius: '10pt', color: 'yellow'}}> 
-                                <div> { item2 } </div>
+                                <Typography sx = {{fontSize: '16pt', width: '220%'}}> { item2 } </Typography>
                             </Grid>
                         </Grid>
                         <Grid container item spacing={2} >
@@ -243,7 +243,7 @@ function ListCard(props) {
                             </Grid>
                             <Grid item xs = {10} sx = {{fontSize: "24pt", width: '84%', position: 'absolute',
                                 left: '10%', borderRadius: '10pt', color: 'yellow'}}> 
-                                <div> { item3 } </div>
+                                <Typography sx = {{fontSize: '16pt', width: '220%'}}> { item3 } </Typography>
                             </Grid>
                         </Grid>
                         <Grid container item spacing={2} >
@@ -252,7 +252,7 @@ function ListCard(props) {
                             </Grid>
                             <Grid item xs = {10} sx = {{fontSize: "24pt", width: '84%', position: 'absolute',
                                 left: '10%', borderRadius: '10pt', color: 'yellow'}}> 
-                                <div> { item4 } </div>
+                                <Typography sx = {{fontSize: '16pt', width: '220%'}}> { item4 } </Typography>
                             </Grid>
                         </Grid>
                         <Grid container item spacing={2}>
@@ -261,7 +261,7 @@ function ListCard(props) {
                             </Grid>
                             <Grid item xs = {10} sx = {{fontSize: "24pt", width: '84%', position: 'absolute',
                                 left: '10%', borderRadius: '10pt', color: 'yellow'}}> 
-                                <div> { item5 } </div>
+                                <Typography sx = {{fontSize: '16pt', width: '220%'}}> { item5 } </Typography>
                             </Grid>
                         </Grid>
                     </Grid>
